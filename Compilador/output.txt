@@ -1,0 +1,366 @@
+
+#source "input.txt"
+
+	 ' * TipoArray [Tipo=float32, Tam=10] v (offset 0)
+call main
+halt
+
+#line	4
+ main:
+	 ' * Parametros
+	 ' * Variables locales
+	 ' * float32 value (offset -4)
+	 ' * int i (offset -6)
+	 ' * int j (offset -8)
+	 ' * TipoArray [Tipo=TipoArray [Tipo=int, Tam=5], Tam=4] w (offset -19)
+	 ' * TipoStruct [campos=[Campo [nombre=day, tipo=int], Campo [nombre=month, tipo=int], Campo [nombre=year, tipo=int]]] date (offset -25)
+	 enter 4
+
+#line	13
+	 ' * Read part 0
+	 push bp
+	 pushi -25
+	 addi
+	 pushi 0
+	 addi
+	 ini
+	 storei
+
+#line	14
+	 ' * date.year = (int) 'a'
+	 push bp
+	 pushi -25
+	 addi
+	 pushi 4
+	 addi
+	 pushb 97
+	 b2i
+	 storei
+
+#line	15
+	 ' * date.month = date.day * date.year % 12 + 1
+	 push bp
+	 pushi -25
+	 addi
+	 pushi 2
+	 addi
+	 push bp
+	 pushi -25
+	 addi
+	 pushi 0
+	 addi
+	 loadi
+	 push bp
+	 pushi -25
+	 addi
+	 pushi 4
+	 addi
+	 loadi
+	 muli
+	 pushi 12
+	 modi
+	 pushi 1
+	 addi
+	 storei
+
+#line	16
+	 ' * Write part 0
+	 push bp
+	 pushi -25
+	 addi
+	 pushi 0
+	 addi
+	 loadi
+	 outi
+	 ' * Write part 1
+	 pushb 10
+	 outb
+	 ' * Write part 2
+	 push bp
+	 pushi -25
+	 addi
+	 pushi 2
+	 addi
+	 loadi
+	 outi
+	 ' * Write part 3
+	 pushb 10
+	 outb
+	 ' * Write part 4
+	 push bp
+	 pushi -25
+	 addi
+	 pushi 4
+	 addi
+	 loadi
+	 i2f
+	 outf
+	 ' * Write part 5
+	 pushb 10
+	 outb
+
+#line	18
+	 ' * Read part 0
+	 push bp
+	 pushi -4
+	 addi
+	 inf
+	 storef
+
+#line	20
+	 ' * i = 0
+	 push bp
+	 pushi -6
+	 addi
+	 pushi 0
+	 storei
+
+#line	31
+	 ' * While [condicion=i < 10, cuerpo=[Asignacion [exp1=v[i], exp2=value], Escritura [expresion=[i, ':', v[i], ' ']], If [condicion=i % 2, cuerpo_if=[Escritura [expresion=['o', 'd', 'd', '
+']]], cuerpo_else=[Escritura [expresion=['e', 'v', 'e', 'n', '
+']]]], Asignacion [exp1=i, exp2=i + 1]]]
+ label_0:
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 10
+	 lti
+	 jz 1
+
+#line	22
+	 ' * v[i] = value
+	 pusha 0
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 4
+	 muli
+	 addi
+	 push bp
+	 pushi -4
+	 addi
+	 loadf
+	 storef
+
+#line	23
+	 ' * Write part 0
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 outi
+	 ' * Write part 1
+	 pushb 58
+	 outb
+	 ' * Write part 2
+	 pusha 0
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 4
+	 muli
+	 addi
+	 loadf
+	 outf
+	 ' * Write part 3
+	 pushb 32
+	 outb
+
+#line	29
+	 ' * If [condicion=i % 2, cuerpo_if=[Escritura [expresion=['o', 'd', 'd', '
+']]], cuerpo_else=[Escritura [expresion=['e', 'v', 'e', 'n', '
+']]]]
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 2
+	 modi
+	 jz 2
+
+#line	25
+	 ' * Write part 0
+	 pushb 111
+	 outb
+	 ' * Write part 1
+	 pushb 100
+	 outb
+	 ' * Write part 2
+	 pushb 100
+	 outb
+	 ' * Write part 3
+	 pushb 10
+	 outb
+	 jmp 3
+ label_label_2:
+
+#line	28
+	 ' * Write part 0
+	 pushb 101
+	 outb
+	 ' * Write part 1
+	 pushb 118
+	 outb
+	 ' * Write part 2
+	 pushb 101
+	 outb
+	 ' * Write part 3
+	 pushb 110
+	 outb
+	 ' * Write part 4
+	 pushb 10
+	 outb
+ label_3:
+
+#line	30
+	 ' * i = i + 1
+	 push bp
+	 pushi -6
+	 addi
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 1
+	 addi
+	 storei
+	 jmp 0
+ label_1:
+
+#line	32
+	 ' * Write part 0
+	 pushb 10
+	 outb
+
+#line	34
+	 ' * i = 0
+	 push bp
+	 pushi -6
+	 addi
+	 pushi 0
+	 storei
+
+#line	44
+	 ' * While [condicion=i < 4, cuerpo=[Asignacion [exp1=j, exp2=0], While [condicion=j < 5, cuerpo=[Asignacion [exp1=w[i][j], exp2=i + j], Escritura [expresion=[w[i][j], ' ']], Asignacion [exp1=j, exp2=j + 1]]], Escritura [expresion=['
+']], Asignacion [exp1=i, exp2=i + 1]]]
+ label_4:
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 4
+	 lti
+	 jz 5
+
+#line	36
+	 ' * j = 0
+	 push bp
+	 pushi -8
+	 addi
+	 pushi 0
+	 storei
+
+#line	41
+	 ' * While [condicion=j < 5, cuerpo=[Asignacion [exp1=w[i][j], exp2=i + j], Escritura [expresion=[w[i][j], ' ']], Asignacion [exp1=j, exp2=j + 1]]]
+ label_6:
+	 push bp
+	 pushi -8
+	 addi
+	 loadi
+	 pushi 5
+	 lti
+	 jz 7
+
+#line	38
+	 ' * w[i][j] = i + j
+	 push bp
+	 pushi -19
+	 addi
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 7
+	 muli
+	 addi
+	 push bp
+	 pushi -8
+	 addi
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 push bp
+	 pushi -8
+	 addi
+	 loadi
+	 addi
+	 storei
+
+#line	39
+	 ' * Write part 0
+	 push bp
+	 pushi -19
+	 addi
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 7
+	 muli
+	 addi
+	 push bp
+	 pushi -8
+	 addi
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 outi
+	 ' * Write part 1
+	 pushb 32
+	 outb
+
+#line	40
+	 ' * j = j + 1
+	 push bp
+	 pushi -8
+	 addi
+	 push bp
+	 pushi -8
+	 addi
+	 loadi
+	 pushi 1
+	 addi
+	 storei
+	 jmp 6
+ label_7:
+
+#line	42
+	 ' * Write part 0
+	 pushb 10
+	 outb
+
+#line	43
+	 ' * i = i + 1
+	 push bp
+	 pushi -6
+	 addi
+	 push bp
+	 pushi -6
+	 addi
+	 loadi
+	 pushi 1
+	 addi
+	 storei
+	 jmp 4
+ label_5:
+	 ret 0, 4, 0

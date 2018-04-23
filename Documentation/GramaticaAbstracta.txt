@@ -1,0 +1,41 @@
+CATEGORIES
+definicion,expresion, sentencia, tipo
+
+NODES
+programa -> definiciones:definicion*;
+
+defFuncion:definicion -> id:variable tipo:tipoFuncion definiciones:defVariable* cuerpo:sentencia* totalLocalVariableSize:int parametersSize:int;
+defVariable:definicion -> tipo:Tipo id:String ambito:int offset:int;
+campo:definicion -> id:String tipo:Tipo offset:int;
+
+asignacion:sentencia -> exp1:expresion exp2:expresion;
+escritura:sentencia -> expresiones:expresion*;
+lectura:sentencia -> expresiones:expresion*;
+if:sentencia -> condicion:expresion cuerpo_if:sentencia* cuerpo_else:sentencia*;
+while:sentencia -> condicion:expresion cuerpo:sentencia*;
+llamadaFuncion:sentencia -> nombre:variable params:expresion* definicion:defFuncion;
+return:sentencia -> expresion:expresion;
+
+accesoArray:expresion -> nombre:expresion index:expresion;
+accesoCampoStruct:expresion -> nombre:variable campo:String;
+aritmetica:expresion -> op1:expresion op2:expresion operador:String;
+cast:expresion -> expresion:expresion tipoDinamico:tipo;
+comparacion:expresion -> op1:expresion op2:expresion operador:String;
+invocacionFuncion:expresion -> nombre:variable params:expresion* definicion:defFuncion;
+literalChar:expresion -> valor:char;
+literalEntero:expresion -> valor:int;
+literalReal:expresion -> valor:float;
+logica:expresion -> op1:expresion op2:expresion operador:String;
+menosUnario:expresion -> expresion:expresion;
+notUnario:expresion -> expresion:expresion;
+variable:expresion -> nombre:String definicion:definicion;
+
+character:tipo -> ;
+entero:tipo -> ;
+real:tipo -> ;
+void:tipo -> ;
+tipoArray:tipo -> tipo:tipo tam:int;
+tipoError:tipo -> mensaje:String;
+tipoFuncion:tipo -> tipoRetorno:tipo params:defVariable*;
+tipoStruct:tipo -> campos:campo*;
+
