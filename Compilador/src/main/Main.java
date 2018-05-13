@@ -42,8 +42,12 @@ public class Main {
 		//Tipos
 		parser.getAST().accept(new ComprobacionTiposVisitor(), null);
 		//Offset
+		if(comprobarErrores())
+			return;
 		parser.getAST().accept(new OffsetVisitor(), null);
 		//Generacion Codigo
+		if(comprobarErrores())
+			return;
 		parser.getAST().accept(new ExecuteCGVisitor(args[0],args[1]), null);
 		
 		if (!comprobarErrores()) {

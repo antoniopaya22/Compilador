@@ -56,6 +56,6 @@ public class TipoArray extends AbstractTipo {
 
 	@Override
 	public int getNumeroBytes() {
-		return this.tam + this.getTipo().getNumeroBytes();
+		return this.tam * this.getTipo().getNumeroBytes();
 	}
 }

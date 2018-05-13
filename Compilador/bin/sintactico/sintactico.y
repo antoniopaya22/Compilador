@@ -136,7 +136,7 @@ tipo_funcion: '(' lista_parametro_tipo_funcion ')' tipo_simple	{ $$ = new TipoFu
 			| '(' lista_parametro_tipo_funcion ')'				{ $$ = new TipoFuncion(lexico.getLinea(), lexico.getColumna(), Void.getInstancia(), $2); }
 			;
 
-main: FUNC main_id '(' ')' '{' lista_def_variables lista_sentencias '}'			{ $$ = new DefFuncion(((Variable)$2).getFila(), ((Variable)$2).getColumna(), new TipoFuncion(lexico.getLinea(), lexico.getColumna(), Void.getInstancia(), new ArrayList<DefVariable>()), $2, $6, $7); }
+main: FUNC main_id '(' ')' '{' lista_def_variables lista_sentencias '}'			{ $$ = new DefFuncion(((Variable)$2).getFila(), ((Variable)$2).getColumna(), new TipoFuncion(lexico.getLinea(), lexico.getColumna(), Void.getInstancia(), new ArrayList<DefVariable>()),$2, $6, $7); }
 	;
 	
 main_id:  MAIN										{ $$ = new Variable(lexico.getLinea(), lexico.getColumna(), "main"); }

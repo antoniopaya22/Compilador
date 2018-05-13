@@ -21,7 +21,10 @@ public class DefFuncion extends AbstractDefinicion {
 	public DefFuncion(int line, int column, Object tipo, Object id, Object definiciones, Object cuerpo) {
 		super(line,column);
 		this.tipo = (TipoFuncion) tipo;
-		this.id = (Variable) id;
+		if(id instanceof Variable)
+			this.id = (Variable) id;
+		else
+			this.id = new Variable(line, column, id);
 		this.definiciones = (List<DefVariable>) definiciones;
 		this.cuerpo = (List<Sentencia>) cuerpo;
 	}

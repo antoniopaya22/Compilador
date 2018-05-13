@@ -5,6 +5,8 @@ import ast.expresion.AccesoCampoStruct;
 import ast.expresion.Aritmetica;
 import ast.expresion.Cast;
 import ast.expresion.Comparacion;
+import ast.expresion.Expresion;
+import ast.expresion.InvocacionFuncion;
 import ast.expresion.LiteralChar;
 import ast.expresion.LiteralEntero;
 import ast.expresion.LiteralReal;
@@ -13,6 +15,7 @@ import ast.expresion.MenosUnario;
 import ast.expresion.NotUnario;
 import ast.expresion.Variable;
 import ast.tipo.Tipo;
+import ast.tipo.TipoFuncion;
 
 public class ValueCGVisitor extends AbstractCGVisitor {
 
@@ -116,6 +119,20 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	public Object visit(NotUnario e, Object param){
 		e.getExpresion().accept(this, param);
 		cg.not();
+		return null;
+	}
+	
+	@Override
+	public Object visit(InvocacionFuncion e, Object param){
+		cg.generarLinea(e.getFila());
+		cg.generateComentario(e.toString());
+		int i = 0;
+		for (Expresion exp : e.getParams()) {
+			exp.accept(this, param);
+			cg.convertTo(exp.getTipo(), ((TipoFuncion)e.getDefinicion().getTipo()).getParam(i).getTipo());
+			i++;
+		}
+		cg.call(e.getVariable().getNombre());
 		return null;
 	}
 }

@@ -11,6 +11,7 @@ import ast.sentencia.Asignacion;
 import ast.sentencia.Escritura;
 import ast.sentencia.If;
 import ast.sentencia.Lectura;
+import ast.sentencia.LlamadaFuncion;
 import ast.sentencia.Return;
 import ast.sentencia.Sentencia;
 import ast.sentencia.While;
@@ -95,7 +96,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		DefFuncion df = (DefFuncion) param;
 		e.getExpresion().accept(vv, param);
 		cg.convertTo(e.getExpresion().getTipo(), ((TipoFuncion) df.getTipo()).getTipoRetorno());
-		cg.ret(e.getExpresion().getTipo().getNumeroBytes(), df.totalLocalVariableSize, df.parametersSize);
+		cg.ret(df.getTipo().getTipoRetorno().getNumeroBytes(), df.totalLocalVariableSize, df.parametersSize);
 		return null;
 	}
 	
@@ -107,11 +108,11 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		cg.id("label_"+label+"");
 		e.getCondicion().accept(vv, param);
 		cg.convertTo(e.getCondicion().getTipo(), Entero.getInstancia());
-		cg.jz((label+1)+"");
+		cg.jz("label_"+(label+1)+"");
 		for (Sentencia s : e.getCuerpo()) {
 			s.accept(this, param);
 		}
-		cg.jmp(label+"");
+		cg.jmp("label_"+label+"");
 		cg.id("label_"+(label+1)+"");
 		return null;
 	}
@@ -123,16 +124,33 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		int label = cg.getLabels(2);
 		e.getCondicion().accept(vv, param);
 		cg.convertTo(e.getCondicion().getTipo(), Entero.getInstancia());
-		cg.jz(label+"");
+		cg.jz("label_"+label+"");
 		for (Sentencia s : e.getCuerpo_if()) {
 			s.accept(this, param);
 		}
-		cg.jmp((label+1)+"");
-		cg.id("label_"+"label_"+label+"");
+		cg.jmp("label_"+(label+1)+"");
+		cg.id("label_"+label+"");
 		for (Sentencia s : e.getCuerpo_else()) {
 			s.accept(this, param);
 		}
 		cg.id("label_"+(label+1)+"");
+		return null;
+	}
+	
+	@Override
+	public Object visit(LlamadaFuncion e, Object param){
+		cg.generarLinea(e.getFila());
+		cg.generateComentario(e.toString());
+		int i = 0;
+		for (Expresion exp : e.getParams()) {
+			exp.accept(vv, param);
+			cg.convertTo(exp.getTipo(), ((TipoFuncion)e.getDefinicion().getTipo()).getParam(i).getTipo());
+			i++;
+		}
+		cg.call(e.getVariable().getNombre());
+		if(!(((TipoFuncion)e.getDefinicion().getTipo()).getTipoRetorno() instanceof Void)) {
+			cg.pop(((TipoFuncion)e.getDefinicion().getTipo()).getTipoRetorno().sufijo());
+		}
 		return null;
 	}
 
@@ -169,7 +187,7 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 
 		for (Sentencia st : df.getCuerpo()) {
 			if (!(st instanceof DefVariable)) {
-				st.accept(this, o);
+				st.accept(this, df);
 			}
 		}
 

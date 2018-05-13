@@ -3,6 +3,7 @@
  */
 package semantico;
 
+import ast.definicion.Campo;
 import ast.definicion.DefFuncion;
 import ast.definicion.DefVariable;
 import ast.definicion.Definicion;
@@ -120,25 +121,38 @@ public class IdVisitor extends AbstractVisitor {
 	}
 
 	@Override
-	public Object visit(AccesoCampoStruct e, Object param) {
-		Definicion struct = tabla.buscar(e.getNombre().getNombre());
-		// Comprobacion declaracion
-		if (struct == null) {
-			new TipoError(e.getFila(), e.getColumna(), "El struct " + e.getNombre().getNombre() + " no esta declarado");
+	public Object visit(TipoStruct e, Object param) {
+		tabla.set();
+		for (Campo c : e.getCampos()) {
+			c.accept(this, param);
 		}
+		tabla.reset();
+		return null;
+	}
+	
+	@Override
+	public Object visit(Campo e, Object param) {
+//		if (!tabla.insertar(e)) {
+//			new TipoError(e.getFila(), e.getColumna(), "El campo " + e.getId() + " ya existe en el struct");
+//		}
+		tabla.insertar(e);
+		e.getTipo().accept(this, param);
+		return null;
+	}
 
-		// Comprobacion tipo struct y que el campo pertenezca al struct
-		if (!(struct.getTipo() instanceof TipoStruct))
-			new TipoError(e.getFila(), e.getColumna(), "La variable " + e.getNombre().getNombre() + " no es un struct");
-		else {
-			TipoStruct ts = (TipoStruct) struct.getTipo();
-			double num = ts.getCampos().stream().filter(x -> x.getId().equals(e.getCampo())).count();
-			if (num == 0) {
-				new TipoError(e.getFila(), e.getColumna(),
-						"En el struct " + e.getNombre().getNombre() + " no hay ningun campo "+e.getCampo());
+	@Override
+	public Object visit(AccesoCampoStruct e, Object param) {
+		Object aux = e.getNombre().accept(this, param);
+		if (aux != null) {
+			if (aux instanceof TipoStruct) {
+				for (Campo campo : ((TipoStruct) aux).getCampos()) {
+					if (campo.getId().equals(e.getCampo())) {
+						return campo.getTipo();
+					}
+				}
+				new TipoError(e.getFila(), e.getColumna(), "El campo " + e.getCampo() + " no existe");
 			}
 		}
-		e.getNombre().setDefinicion(struct);
 		return null;
 	}
 

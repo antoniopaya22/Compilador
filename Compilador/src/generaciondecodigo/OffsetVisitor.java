@@ -28,12 +28,14 @@ public class OffsetVisitor extends AbstractVisitor {
 	@Override
 	public Object visit(TipoFuncion e, Object param) {
 		int temp = 4;
-		for (int i = e.getParams().size() - 1; i >= 0; i--) {
+		int size = 0;
+		for (int i = (e.getParams().size() - 1); i >= 0; i--) {
 			DefVariable parametro = e.getParams().get(i);
 			parametro.setOffset(temp);
 			temp += parametro.getTipo().getNumeroBytes();
+			size += parametro.getTipo().getNumeroBytes();
 		}
-		return temp;
+		return size;
 	}
 
 	@Override
@@ -49,12 +51,14 @@ public class OffsetVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(DefFuncion e, Object param) {
-		e.setTotalLocalVariableSize((int) e.getTipo().accept(this, param));
+		e.setParametersSize((int)e.getTipo().accept(this, param));
+		int enter = 0;
+		for(DefVariable df : e.getDefiniciones()) {
+			enter += df.getTipo().getNumeroBytes();
+		}
+		e.setTotalLocalVariableSize(enter);
 		offsetLocal=0; 
 		e.getDefiniciones().stream().forEach(x -> x.accept(this, param));
-		
-//		//Se resetea el contador.
-//		e.totalLocalVariableSize=offsetLocal*-1;
 		offsetLocal=0;
 		return null;
 	}

@@ -1100,7 +1100,7 @@ case 32:
 break;
 case 33:
 //#line 139 "../../src/sintactico/sintactico.y"
-{ yyval = new DefFuncion(((Variable)val_peek(6)).getFila(), ((Variable)val_peek(6)).getColumna(), new TipoFuncion(lexico.getLinea(), lexico.getColumna(), Void.getInstancia(), new ArrayList<DefVariable>()), val_peek(6), val_peek(2), val_peek(1)); }
+{ yyval = new DefFuncion(((Variable)val_peek(6)).getFila(), ((Variable)val_peek(6)).getColumna(), new TipoFuncion(lexico.getLinea(), lexico.getColumna(), Void.getInstancia(), new ArrayList<DefVariable>()),val_peek(6), val_peek(2), val_peek(1)); }
 break;
 case 34:
 //#line 142 "../../src/sintactico/sintactico.y"

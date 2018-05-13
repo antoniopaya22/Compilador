@@ -131,7 +131,7 @@ public class ComprobacionTiposVisitor extends AbstractVisitor {
 		e.setTipo(e.getNombre().getTipo().punto(e.getCampo()));
 		if (e.getTipo() == null)
 			e.setTipo(new TipoError(e.getFila(), e.getColumna(),
-					"La variable " + e.getNombre().getNombre() + " no es de tipo struct"));
+					"El struct " + e.getNombre() + " no contiene el campo "+e.getCampo()));
 		return null;
 	}
 

@@ -8,26 +8,26 @@ import visitor.Visitor;
  */
 public class AccesoCampoStruct extends AbstractExpresion {
 
-	private Variable nombre;
+	private Expresion nombre;
 	private String campo;
 
 	public AccesoCampoStruct(int i, int j, Object nombre, Object campo) {
 		super(i, j);
-		this.nombre = (Variable) nombre;
+		this.nombre = (Expresion) nombre;
 		this.campo = (String) campo;
 	}
 
-	public AccesoCampoStruct(int i, int j, Variable nombre, String campo) {
+	public AccesoCampoStruct(int i, int j,Expresion nombre, String campo) {
 		super(i, j);
 		this.nombre = nombre;
 		this.campo = campo;
 	}
 
-	public Variable getNombre() {
+	public Expresion getNombre() {
 		return nombre;
 	}
 
-	public void setNombre(Variable nombre) {
+	public void setNombre(Expresion nombre) {
 		this.nombre = nombre;
 	}
 

@@ -40,6 +40,10 @@ public class TipoFuncion extends AbstractTipo {
 	public List<DefVariable> getParams() {
 		return params;
 	}
+	
+	public DefVariable getParam(int i) {
+		return params.get(i);
+	}
 
 	public void setParams(List<DefVariable> params) {
 		this.params = params;
