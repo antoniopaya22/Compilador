@@ -1,0 +1,12 @@
+var i,j int;
+
+func main() {
+  j = 9;
+  i = (j != 9) ? 2 : 1 ;
+  write(i);	//Debe imprimir 1
+  
+  write('\n');
+  
+  i = (j == 9) ? 2 : 1 ;
+  write(i);	//Debe imprimir 2
+}

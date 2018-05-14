@@ -300,12 +300,17 @@ public class CodeGenerator {
 	}
 
 	public void logica(String operando, Tipo tipo) {
+		String sufijo = tipo instanceof Char? "i" : tipo.sufijo();
 		switch (operando) {
 			case "&&":
 				this.and();
 				break;
 			case "||":
 				this.or();
+				break;
+			case "^^":
+				this.eq(sufijo);
+				this.not();
 				break;
 			}
 	}

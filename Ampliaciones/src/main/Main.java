@@ -35,6 +35,7 @@ public class Main {
 		parser.run();	
 		if (comprobarErrores())
 			return;
+		
 	
 		// ==========ANALISIS====================
 		//Identificacion

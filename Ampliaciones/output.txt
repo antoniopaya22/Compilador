@@ -1,0 +1,77 @@
+
+#source "input.txt"
+
+	 ' * int i (offset 0)
+	 ' * int j (offset 2)
+call main
+halt
+
+#line	3
+ main:
+	 ' * Parametros
+	 ' * Variables locales
+	 enter 0
+
+#line	4
+	 ' * j = 5
+	 pusha 2
+	 pushi 5
+	 storei
+
+#line	5
+	 ' * i = 0
+	 pusha 0
+	 pushi 0
+	 storei
+
+#line	15
+	 ' * If [condicion=i == 0, cuerpo_if=[DoWhile [condicion=j > 0, cuerpo=[Asignacion [exp1=i, exp2=i + 1], Asignacion [exp1=j, exp2=j - 1], Escritura [expresion=[i, '
+']]]]], cuerpo_else=[]]
+	 pusha 0
+	 loadi
+	 pushi 0
+	 eqi
+	 jz label_0
+
+#line	11
+	 ' * DoWhile [condicion=j > 0, cuerpo=[Asignacion [exp1=i, exp2=i + 1], Asignacion [exp1=j, exp2=j - 1], Escritura [expresion=[i, '
+']]]]
+ label_2:
+
+#line	8
+	 ' * i = i + 1
+	 pusha 0
+	 pusha 0
+	 loadi
+	 pushi 1
+	 addi
+	 storei
+
+#line	9
+	 ' * j = j - 1
+	 pusha 2
+	 pusha 2
+	 loadi
+	 pushi 1
+	 subi
+	 storei
+
+#line	10
+	 ' * Write part 0
+	 pusha 0
+	 loadi
+	 outi
+	 ' * Write part 1
+	 pushb 10
+	 outb
+	 pusha 2
+	 loadi
+	 pushi 0
+	 gti
+	 jz label_3
+	 jmp label_2
+ label_3:
+	 jmp label_1
+ label_0:
+ label_1:
+	 ret 0, 0, 0

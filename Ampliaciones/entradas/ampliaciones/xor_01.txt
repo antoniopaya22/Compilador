@@ -1,0 +1,13 @@
+var i,j,k int;
+
+func main() {
+  i = 1;
+  j = 5;
+  k = 3;
+  
+  if( (i == j) ^^ (i < k) ){
+  	write('b','i','e','n');
+  }else{
+  	write('m','a','l');
+  }
+}

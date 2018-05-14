@@ -1,0 +1,12 @@
+var i,j int;
+
+func main() {
+  j = 5;
+  i = 0;
+  do {
+  	i++;
+  	j--;
+  	write(i,'\n');
+  }while(j > 0)
+  
+}

@@ -1,0 +1,11 @@
+============AMPLIACIONES===================
+
+1) Conversión implícita de tipos vista en clase con Miguel
+2) Comprobación de la existencia de un Return 
+	en caso de que el tipo de retorno de la funcion != Void
+3) XOR -> Sintaxis: 9 ^^ 8
+4) For -> Sintaxis: for( i = 0 ; i < 10 ; i = i+1 ) { sentencias }
+5) ++ y -- -> Sintaxis: i++; i--;
+6) Operador ternario -> Sintaxis: (boolean op) ? if_true : if_false
+		ejemplo: (i < 10) ? 2 : 1
+7) doWhile -> Sintaxis: do { sentencias } while ( i < 3 )
