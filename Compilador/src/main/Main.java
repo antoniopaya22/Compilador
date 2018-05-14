@@ -35,22 +35,21 @@ public class Main {
 		parser.run();	
 		
 	
+		// ==========ANALISIS====================
 		//Identificacion
 		parser.getAST().accept(new IdVisitor(), null);
 		//LValue
 		parser.getAST().accept(new LValueVisitor(), null);
 		//Tipos
 		parser.getAST().accept(new ComprobacionTiposVisitor(), null);
-		//Offset
-		if(comprobarErrores())
-			return;
-		parser.getAST().accept(new OffsetVisitor(), null);
-		//Generacion Codigo
-		if(comprobarErrores())
-			return;
-		parser.getAST().accept(new ExecuteCGVisitor(args[0],args[1]), null);
 		
+		// ==========SINTESIS====================
 		if (!comprobarErrores()) {
+			//Offset
+			parser.getAST().accept(new OffsetVisitor(), null);
+			//Generacion Codigo
+			parser.getAST().accept(new ExecuteCGVisitor(args[0],args[1]), null);
+			
 			IntrospectorModel modelo=new IntrospectorModel("Programa",parser.getAST());
 			new IntrospectorTree("Introspector", modelo);
 		}

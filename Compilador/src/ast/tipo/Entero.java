@@ -101,7 +101,7 @@ public class Entero extends AbstractTipo {
 	@Override
 	public Tipo esMayor(Tipo c) {
 		if(c instanceof Char || c instanceof Entero)
-			return c;
+			return this;
 		if(c instanceof Real)
 			return Real.getInstancia();
 		return null;

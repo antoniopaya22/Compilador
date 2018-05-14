@@ -98,8 +98,10 @@ public class Char extends AbstractTipo {
 	
 	@Override
 	public Tipo esMayor(Tipo c) {
-		if(c instanceof Char || c instanceof Entero || c instanceof Real)
+		if(c instanceof Entero || c instanceof Real)
 			return c;
+		else if(c instanceof Char)
+			return Entero.getInstancia();
 		return null;
 	}
 

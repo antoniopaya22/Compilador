@@ -11,6 +11,9 @@ func f(a int, c float32) int {
   var real float32;
   real = c;
   i = a;
+  if ( n ){
+  	return n;
+  }
 }
 
 // * Programa principal

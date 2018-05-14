@@ -1,702 +1,115 @@
 
 #source "input.txt"
 
-	 ' * TipoStruct [campos=[Campo [nombre=integer, tipo=int], Campo [nombre=character, tipo=char]]] pair (offset 0)
-	 ' * TipoArray [Tipo=TipoStruct [campos=[Campo [nombre=employees, tipo=TipoArray [Tipo=TipoStruct [campos=[Campo [nombre=age, tipo=int]]], Tam=2]]]], Tam=2] acme (offset 3)
-	 ' * TipoArray [Tipo=TipoArray [Tipo=int, Tam=3], Tam=8] fibonacci (offset 11)
+	 ' * int i (offset 0)
+	 ' * int n (offset 2)
+	 ' * char c (offset 4)
+	 ' * TipoStruct [campos=[Campo [nombre=intField, tipo=int], Campo [nombre=realField, tipo=float32]]] record (offset 5)
 call main
 halt
 
-#line	14
- p:
-	 ' * Parametros
-	 ' * Variables locales
-	 enter 0
-	 ret 0, 0, 0
-
-#line	16
+#line	10
  f:
 	 ' * Parametros
-	 ' * float32 r (offset 6)
-	 ' * int e (offset 4)
+	 ' * int a (offset 8)
+	 ' * float32 c (offset 4)
 	 ' * Variables locales
 	 ' * float32 real (offset -4)
-	 ' * char c (offset -5)
-	 ' * int result (offset -7)
-	 enter 7
+	 enter 4
 
-#line	20
-	 ' * real = r * 10.0
+#line	12
+	 ' * real = c
 	 push bp
 	 pushi -4
 	 addi
 	 push bp
-	 pushi 6
+	 pushi 4
 	 addi
 	 loadf
-	 pushf 10.0
-	 mulf
 	 storef
 
-#line	21
-	 ' * c = '0'
+#line	13
+	 ' * i = a
+	 pusha 0
 	 push bp
-	 pushi -5
-	 addi
-	 pushb 48
-	 storeb
-
-#line	28
-	 ' * If [condicion=e < 256, cuerpo_if=[Asignacion [exp1=c, exp2=(char) e], Asignacion [exp1=result, exp2=(int) c]], cuerpo_else=[Asignacion [exp1=result, exp2=(int) real]]]
-	 push bp
-	 pushi 4
+	 pushi 8
 	 addi
 	 loadi
-	 pushi 256
-	 lti
+	 storei
+
+#line	21
+	 ' * If [condicion=n, cuerpo_if=[Return [expresion=n], If [condicion=n, cuerpo_if=[Return [expresion=n]], cuerpo_else=[]]], cuerpo_else=[Return [expresion=n]]]
+	 pusha 2
+	 loadi
 	 jz label_0
 
-#line	23
-	 ' * c = (char) e
-	 push bp
-	 pushi -5
-	 addi
-	 push bp
-	 pushi 4
-	 addi
+#line	15
+	 ' * Return
+	 pusha 2
 	 loadi
-	 i2b
-	 storeb
+	 ret 2, 4, 6
 
-#line	24
-	 ' * result = (int) c
-	 push bp
-	 pushi -7
-	 addi
-	 push bp
-	 pushi -5
-	 addi
-	 loadb
-	 b2i
-	 storei
+#line	19
+	 ' * If [condicion=n, cuerpo_if=[Return [expresion=n]], cuerpo_else=[]]
+	 pusha 2
+	 loadi
+	 jz label_2
+
+#line	17
+	 ' * Return
+	 pusha 2
+	 loadi
+	 ret 2, 4, 6
+	 jmp label_3
+ label_2:
+ label_3:
 	 jmp label_1
  label_0:
 
-#line	27
-	 ' * result = (int) real
-	 push bp
-	 pushi -7
-	 addi
-	 push bp
-	 pushi -4
-	 addi
-	 loadf
-	 f2i
-	 storei
+#line	20
+	 ' * Return
+	 pusha 2
+	 loadi
+	 ret 2, 4, 6
  label_1:
 
-#line	29
-	 ' * Return
-	 push bp
-	 pushi -7
-	 addi
-	 loadi
-	 ret 2, 7, 6
-
-#line	32
- initialize:
-	 ' * Parametros
-	 ' * Variables locales
-	 ' * int i (offset -2)
-	 enter 2
-
-#line	34
-	 ' * fibonacci[0][0] = 0
-	 pusha 11
-	 pushi 0
-	 pushi 6
-	 muli
-	 addi
-	 pushi 0
-	 pushi 2
-	 muli
-	 addi
-	 pushi 0
-	 storei
-
-#line	35
-	 ' * fibonacci[0][1] = 1
-	 pusha 11
-	 pushi 0
-	 pushi 6
-	 muli
-	 addi
-	 pushi 1
-	 pushi 2
-	 muli
-	 addi
-	 pushi 1
-	 storei
-
-#line	36
-	 ' * fibonacci[0][2] = 1
-	 pusha 11
-	 pushi 0
-	 pushi 6
-	 muli
-	 addi
-	 pushi 2
-	 pushi 2
-	 muli
-	 addi
-	 pushi 1
-	 storei
-
-#line	37
-	 ' * i = 1
-	 push bp
-	 pushi -2
-	 addi
-	 pushi 1
-	 storei
-
-#line	43
-	 ' * While [condicion=i < 8, cuerpo=[Asignacion [exp1=fibonacci[i][0], exp2=fibonacci[i - 1][1]], Asignacion [exp1=fibonacci[i][1], exp2=fibonacci[i - 1][2]], Asignacion [exp1=fibonacci[i][2], exp2=fibonacci[i][0] + fibonacci[i][1]], Asignacion [exp1=i, exp2=i + 1]]]
- label_2:
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 8
-	 lti
-	 jz label_3
-
-#line	39
-	 ' * fibonacci[i][0] = fibonacci[i - 1][1]
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 0
-	 pushi 2
-	 muli
-	 addi
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 1
-	 subi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 1
-	 pushi 2
-	 muli
-	 addi
-	 loadi
-	 storei
-
-#line	40
-	 ' * fibonacci[i][1] = fibonacci[i - 1][2]
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 1
-	 pushi 2
-	 muli
-	 addi
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 1
-	 subi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 2
-	 pushi 2
-	 muli
-	 addi
-	 loadi
-	 storei
-
-#line	41
-	 ' * fibonacci[i][2] = fibonacci[i][0] + fibonacci[i][1]
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 2
-	 pushi 2
-	 muli
-	 addi
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 0
-	 pushi 2
-	 muli
-	 addi
-	 loadi
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 1
-	 pushi 2
-	 muli
-	 addi
-	 loadi
-	 addi
-	 storei
-
-#line	42
-	 ' * i = i + 1
-	 push bp
-	 pushi -2
-	 addi
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 1
-	 addi
-	 storei
-	 jmp label_2
- label_3:
-	 ret 0, 2, 0
-
-#line	48
+#line	25
  main:
 	 ' * Parametros
 	 ' * Variables locales
 	 ' * int i (offset -2)
-	 ' * int j (offset -4)
-	 enter 4
+	 ' * float32 r (offset -6)
+	 enter 6
 
-#line	50
-	 ' * InvocacionFuncion [nombre=p, params=[]]
-	 call p
-
-#line	51
-	 ' * i = 0
-	 push bp
-	 pushi -2
-	 addi
-	 pushi 0
-	 storei
-
-#line	52
-	 ' * pair.character = '0'
-	 pusha 0
-	 pushi 2
-	 addi
-	 pushb 48
-	 storeb
-
-#line	53
-	 ' * pair.integer = (int) '0'
-	 pusha 0
-	 pushi 0
-	 addi
-	 pushb 48
-	 b2i
-	 storei
-
-#line	56
+#line	28
 	 ' * Write part 0
-
-#line	56
-	 ' * f((float32) i,(int) pair.character)
 	 push bp
 	 pushi -2
 	 addi
 	 loadi
-	 i2f
-	 pusha 0
-	 pushi 2
-	 addi
-	 loadb
-	 b2i
-	 call f
 	 outi
 	 ' * Write part 1
-	 pushb 10
-	 outb
 
-#line	57
-	 ' * InvocacionFuncion [nombre=f, params=[1.3, 2]]
-	 pushf 1.2999999523162842
-	 pushi 2
+#line	28
+	 ' * f(n,r)
+	 pusha 2
+	 loadi
+	 push bp
+	 pushi -6
+	 addi
+	 loadf
 	 call f
-	 popi
-
-#line	59
-	 ' * InvocacionFuncion [nombre=initialize, params=[]]
-	 call initialize
-
-#line	60
-	 ' * i = 0
-	 push bp
-	 pushi -2
-	 addi
-	 pushi 0
-	 storei
-
-#line	67
-	 ' * While [condicion=i < 8, cuerpo=[Escritura [expresion=['(', i + 1, ')', fibonacci[i][0], '+', fibonacci[i][1], '=', fibonacci[i][2], '
-']], Asignacion [exp1=i, exp2=i + 1]]]
- label_4:
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 8
-	 lti
-	 jz label_5
-
-#line	65
-	 ' * Write part 0
-	 pushb 40
-	 outb
-	 ' * Write part 1
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 1
-	 addi
 	 outi
 	 ' * Write part 2
-	 pushb 41
-	 outb
+	 pusha 5
+	 pushi 0
+	 addi
+	 loadi
+	 outi
 	 ' * Write part 3
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 0
+	 pusha 5
 	 pushi 2
-	 muli
 	 addi
-	 loadi
-	 outi
-	 ' * Write part 4
-	 pushb 43
-	 outb
-	 ' * Write part 5
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 1
-	 pushi 2
-	 muli
-	 addi
-	 loadi
-	 outi
-	 ' * Write part 6
-	 pushb 61
-	 outb
-	 ' * Write part 7
-	 pusha 11
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 6
-	 muli
-	 addi
-	 pushi 2
-	 pushi 2
-	 muli
-	 addi
-	 loadi
-	 outi
-	 ' * Write part 8
-	 pushb 10
-	 outb
-
-#line	66
-	 ' * i = i + 1
-	 push bp
-	 pushi -2
-	 addi
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 1
-	 addi
-	 storei
-	 jmp label_4
- label_5:
-
-#line	69
-	 ' * acme[1].employees[1].age = 56
-	 pusha 3
-	 pushi 1
-	 pushi 4
-	 muli
-	 addi
-	 pushi 0
-	 addi
-	 pushi 1
-	 pushi 2
-	 muli
-	 addi
-	 pushi 0
-	 addi
-	 pushi 56
-	 storei
-
-#line	71
-	 ' * Write part 0
-	 pusha 3
-	 pushi 1
-	 pushi 4
-	 muli
-	 addi
-	 pushi 0
-	 addi
-	 pushi 1
-	 pushi 2
-	 muli
-	 addi
-	 pushi 0
-	 addi
-	 loadi
-	 outi
-	 ' * Write part 1
-	 pushb 10
-	 outb
-
-#line	72
-	 ' * i = 0
-	 push bp
-	 pushi -2
-	 addi
-	 pushi 0
-	 storei
-
-#line	80
-	 ' * While [condicion=i < 2, cuerpo=[Asignacion [exp1=j, exp2=0], While [condicion=j < 2, cuerpo=[Asignacion [exp1=acme[i].employees[j].age, exp2=i + j], Asignacion [exp1=j, exp2=j + 1]]], Asignacion [exp1=i, exp2=i + 1]]]
- label_6:
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 2
-	 lti
-	 jz label_7
-
-#line	74
-	 ' * j = 0
-	 push bp
-	 pushi -4
-	 addi
-	 pushi 0
-	 storei
-
-#line	78
-	 ' * While [condicion=j < 2, cuerpo=[Asignacion [exp1=acme[i].employees[j].age, exp2=i + j], Asignacion [exp1=j, exp2=j + 1]]]
- label_8:
-	 push bp
-	 pushi -4
-	 addi
-	 loadi
-	 pushi 2
-	 lti
-	 jz label_9
-
-#line	76
-	 ' * acme[i].employees[j].age = i + j
-	 pusha 3
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 4
-	 muli
-	 addi
-	 pushi 0
-	 addi
-	 push bp
-	 pushi -4
-	 addi
-	 loadi
-	 pushi 2
-	 muli
-	 addi
-	 pushi 0
-	 addi
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 push bp
-	 pushi -4
-	 addi
-	 loadi
-	 addi
-	 storei
-
-#line	77
-	 ' * j = j + 1
-	 push bp
-	 pushi -4
-	 addi
-	 push bp
-	 pushi -4
-	 addi
-	 loadi
-	 pushi 1
-	 addi
-	 storei
-	 jmp label_8
- label_9:
-
-#line	79
-	 ' * i = i + 1
-	 push bp
-	 pushi -2
-	 addi
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 1
-	 addi
-	 storei
-	 jmp label_6
- label_7:
-
-#line	83
-	 ' * i = 0
-	 push bp
-	 pushi -2
-	 addi
-	 pushi 0
-	 storei
-
-#line	92
-	 ' * While [condicion=i < 2, cuerpo=[Asignacion [exp1=j, exp2=0], While [condicion=j < 2, cuerpo=[Escritura [expresion=[acme[i].employees[j].age, ' ']], Asignacion [exp1=j, exp2=j + 1]]], Asignacion [exp1=i, exp2=i + 1]]]
- label_10:
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 2
-	 lti
-	 jz label_11
-
-#line	85
-	 ' * j = 0
-	 push bp
-	 pushi -4
-	 addi
-	 pushi 0
-	 storei
-
-#line	90
-	 ' * While [condicion=j < 2, cuerpo=[Escritura [expresion=[acme[i].employees[j].age, ' ']], Asignacion [exp1=j, exp2=j + 1]]]
- label_12:
-	 push bp
-	 pushi -4
-	 addi
-	 loadi
-	 pushi 2
-	 lti
-	 jz label_13
-
-#line	88
-	 ' * Write part 0
-	 pusha 3
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 4
-	 muli
-	 addi
-	 pushi 0
-	 addi
-	 push bp
-	 pushi -4
-	 addi
-	 loadi
-	 pushi 2
-	 muli
-	 addi
-	 pushi 0
-	 addi
-	 loadi
-	 outi
-	 ' * Write part 1
-	 pushb 32
-	 outb
-
-#line	89
-	 ' * j = j + 1
-	 push bp
-	 pushi -4
-	 addi
-	 push bp
-	 pushi -4
-	 addi
-	 loadi
-	 pushi 1
-	 addi
-	 storei
-	 jmp label_12
- label_13:
-
-#line	91
-	 ' * i = i + 1
-	 push bp
-	 pushi -2
-	 addi
-	 push bp
-	 pushi -2
-	 addi
-	 loadi
-	 pushi 1
-	 addi
-	 storei
-	 jmp label_10
- label_11:
-	 ret 0, 4, 0
+	 loadf
+	 outf
+	 ret 0, 6, 0

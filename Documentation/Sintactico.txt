@@ -1,0 +1,165 @@
+
+//Tokens
+%token CTE_ENTERA CTE_CHAR CTE_REAL ID NOT_EQ AND OR POW
+%token EQ L_EQ G_EQ READ WRITE WHILE IF ELSE INT FLOAT CHAR
+%token VAR STRUCT RETURN FUNC MAIN END
+
+// Preferencia
+%right '='
+%left OR AND
+%left EQ NOT_EQ
+%left L_EQ G_EQ '>' '<'
+%left '+' '-'
+%left '*' '/' '%'
+%left '!'
+%nonassoc MENOSQUEELSE
+%nonassoc ELSE
+%right MENOS_UNARIO
+%nonassoc '[' ']'
+%nonassoc '{' '}'
+%left '.'
+%nonassoc '(' ')'
+
+%%
+// * Gramática y acciones Yacc
+
+programa: lista_definiciones main
+		;	
+	  
+//===================================TIPOS================================================
+
+llaves_array: '[' CTE_ENTERA ']'				
+			| '[' CTE_ENTERA ']' llaves_array	
+			;
+		  
+array: llaves_array tipo					
+	 ;
+
+struct:	STRUCT '{' lista_campos '}'			
+	  ;
+
+campo: lista_id tipo ';'					
+	  ;
+
+lista_campos: lista_campos campo			
+			| campo							
+			;
+		  
+tipo: INT		
+	| FLOAT	
+	| CHAR		
+	| array		
+	| struct
+	;
+	
+tipo_simple: INT
+		   | FLOAT
+	       | CHAR
+		  
+//===================================DEFINICIONES================================================
+
+lista_definiciones: lista_definiciones definicion
+				  | /*Vacio*/							
+				  ;
+
+lista_def_variables: lista_def_variables def_variable_completa
+				   | /*Vacio*/							
+					
+				  
+definicion: def_variable_completa							
+		  | def_funcion										
+		  ;
+		  
+def_variable_completa: VAR lista_id tipo ';'
+					 ;
+		  
+def_variable: ID tipo								
+			;
+			
+lista_id: lista_id ',' ID						
+		| ID						
+		;
+		  
+lista_parametro_tipo_funcion: lista_parametro_tipo			
+			  				| /*Vacio*/						
+			  				;
+
+lista_parametro_tipo: lista_parametro_tipo ',' def_variable		
+		  			| def_variable						
+		  			;
+
+tipo_funcion: '(' lista_parametro_tipo_funcion ')' tipo_simple
+			| '(' lista_parametro_tipo_funcion ')'	
+			;
+
+main: FUNC main_id '(' ')' '{' lista_def_variables lista_sentencias '}'	
+	;
+	
+main_id:  MAIN			
+	   ;
+def_funcion: FUNC ID tipo_funcion '{' lista_def_variables lista_sentencias '}'  
+	       ;
+
+//===================================SENTENCIAS================================================
+
+lista_sentencias: lista_sentencias sentencia				
+		        | /*Vacio*/							
+			 	;
+
+sentencia: RETURN expresion ';' 							
+		 | READ '(' lista_expresiones ')' ';'				
+		 | WRITE '(' lista_expresiones ')' ';'				
+		 | if_else											
+		 | while											
+		 | expresion '=' expresion ';'						
+		 | ID '(' lista_expresiones_llamada_fun ')' ';'	
+		 ;
+		   
+
+if_else: IF expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'	 
+	   | IF expresion '{' lista_sentencias '}'  %prec MENOSQUEELSE				
+	   | IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'
+	   ;
+
+while: WHILE '(' expresion ')' '{' lista_sentencias '}'
+	 | WHILE expresion '{' lista_sentencias '}'			
+	 ;
+
+
+//=======================================EXPRESIONES==============================================
+
+lista_expresiones_llamada_fun: lista_expresiones	
+							 | /*Vacio*/ 							
+							 ;
+
+lista_expresiones: lista_expresiones ',' expresion      			              
+			     | expresion            						                       
+			     ;      
+
+expresion: expresion '+' expresion                  
+		 | expresion '*' expresion                 
+		 | expresion '/' expresion                  
+		 | expresion '-' expresion                           
+		 | expresion '%' expresion                  
+		 | expresion EQ expresion                   
+		 | expresion NOT_EQ expresion               
+		 | expresion '>' expresion					
+		 | expresion '<' expresion					
+		 | expresion L_EQ expresion					
+		 | expresion G_EQ expresion					
+		 | expresion AND expresion					
+		 | expresion OR expresion					
+		 | ID '(' lista_expresiones_llamada_fun ')' 
+		 | tipo '(' expresion ')'					
+		 | expresion '[' expresion ']'				
+		 | expresion '.' ID							
+		 | expresion '!' expresion					
+		 | '-' expresion		%prec MENOS_UNARIO	
+		 | '(' expresion ')'						
+		 | '!' expresion							
+		 | ID										
+		 | CTE_CHAR									
+		 | CTE_REAL									
+		 | CTE_ENTERA		  						
+		 ;
+%%

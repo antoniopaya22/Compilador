@@ -15,15 +15,19 @@ import ast.expresion.MenosUnario;
 import ast.expresion.NotUnario;
 import ast.expresion.Variable;
 import ast.sentencia.Asignacion;
+import ast.sentencia.Escritura;
 import ast.sentencia.If;
+import ast.sentencia.Lectura;
 import ast.sentencia.LlamadaFuncion;
 import ast.sentencia.Return;
+import ast.sentencia.Sentencia;
 import ast.sentencia.While;
 import ast.tipo.Char;
 import ast.tipo.Entero;
 import ast.tipo.Real;
 import ast.tipo.Tipo;
 import ast.tipo.TipoError;
+import ast.tipo.Void;
 import visitor.AbstractVisitor;
 
 public class ComprobacionTiposVisitor extends AbstractVisitor {
@@ -59,18 +63,31 @@ public class ComprobacionTiposVisitor extends AbstractVisitor {
 			e.getCondicion().setTipo(new TipoError(e.getCondicion().getFila(), e.getCondicion().getColumna(),
 					"La condición del while debe ser de tipo Logico"));
 		e.getCuerpo().stream().forEach(x -> x.accept(this, param));
-		return null;
+		return false;
 	}
 
 	@Override
 	public Object visit(If e, Object param) {
+		boolean returnIf = false;
+		boolean returnElse = false;
+		
 		e.getCondicion().accept(this, param);
 		if (!e.getCondicion().getTipo().esLogico())
 			e.getCondicion().setTipo(new TipoError(e.getCondicion().getFila(), e.getCondicion().getColumna(),
 					"La condición del if debe ser de tipo Logico"));
-		e.getCuerpo_if().stream().forEach(x -> x.accept(this, param));
-		e.getCuerpo_else().stream().forEach(x -> x.accept(this, param));
-		return null;
+
+		for (Sentencia x : e.getCuerpo_if()) {
+			if ((boolean) x.accept(this, param)) {
+				returnIf = true;
+			}
+		}
+		for (Sentencia x : e.getCuerpo_else()) {
+			if ((boolean) x.accept(this, param)) {
+				returnElse = true;
+			}
+		}
+		if(e.getCuerpo_else().size() == 0) return false;
+		return returnIf && returnElse;
 	}
 
 	@Override
@@ -180,12 +197,33 @@ public class ComprobacionTiposVisitor extends AbstractVisitor {
 		if (e.getExp2().getTipo().promocionaA(e.getExp1().getTipo()) == null) {
 			e.getExp1().setTipo(new TipoError(e.getFila(), e.getColumna(), "La asignacion no es posible"));
 		}
-		return null;
+		return false;
+	}
+	
+	@Override
+	public Object visit(Escritura e, Object param) {
+		super.visit(e, param);
+		return false;
+	}
+	
+	@Override
+	public Object visit(Lectura e, Object param) {
+		super.visit(e, param);
+		return false;
 	}
 	
 	@Override
 	public Object visit(DefFuncion e, Object param) {
-		super.visit(e, e.getTipo().getTipoRetorno());
+		boolean tieneReturn = false;
+		e.getTipo().accept(this, param);
+		e.getDefiniciones().stream().forEach(x -> x.accept(this, param));
+		for(Sentencia set : e.getCuerpo()) {
+			if ((boolean) set.accept(this, e.getTipo().getTipoRetorno())) {
+				tieneReturn = true;
+			}
+		}
+		if(!tieneReturn && !(e.getTipo().getTipoRetorno() instanceof Void ))
+			new TipoError(e.getFila(), e.getColumna(), "La funcion no tiene un return");
 		return null;
 	}
 	
@@ -195,6 +233,6 @@ public class ComprobacionTiposVisitor extends AbstractVisitor {
 		if(e.getExpresion().getTipo().promocionaA((Tipo) param) == null) {
 			new TipoError(e.getFila(), e.getColumna(), "El tipo de return no es igual al de la funcion");
 		}
-		return null;
+		return true;
 	}
 }

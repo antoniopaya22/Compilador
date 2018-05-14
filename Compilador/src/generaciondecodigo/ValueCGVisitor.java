@@ -93,7 +93,7 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		cg.convertTo(e.getOp1().getTipo(), tipoMayor);
 		e.getOp2().accept(this, param);
 		cg.convertTo(e.getOp2().getTipo(), tipoMayor);
-		cg.comparacion(e.getOperador(), e.getTipo());
+		cg.comparacion(e.getOperador(), tipoMayor);
 		return null;
 	}
 
@@ -110,7 +110,7 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	@Override
 	public Object visit(MenosUnario e, Object param) {
 		cg.push(e.getExpresion().getTipo().sufijo(), 0);
-		e.accept(this, param);
+		e.getExpresion().accept(this, param);
 		cg.sub(e.getTipo().sufijo());
 		return null;
 	}
