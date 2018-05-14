@@ -9,3 +9,4 @@
 6) Operador ternario -> Sintaxis: (boolean op) ? if_true : if_false
 		ejemplo: (i < 10) ? 2 : 1
 7) doWhile -> Sintaxis: do { sentencias } while ( i < 3 )
+8) Paso de parametros por referencia -> Sintaxis: func g(ref a int){

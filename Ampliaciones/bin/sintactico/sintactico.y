@@ -25,6 +25,8 @@ import java.util.*;
 %token XOR
 //AMPLIACION DOWHILE
 %token DO
+//AMPLIACION PARAMETROS REFERENCIA
+%token REF
 
 // Preferencia
 %right '='
@@ -138,7 +140,20 @@ lista_parametro_tipo_funcion: lista_parametro_tipo			{ $$ = $1; }
 
 lista_parametro_tipo: lista_parametro_tipo ',' def_variable		{ $$ = $1; ((List<DefVariable>)$$).add((DefVariable)$3); }  
 		  			| def_variable								{ $$ = new ArrayList<DefVariable>(); ((List<DefVariable>)$$).add((DefVariable)$1); }  
+		  			| lista_parametro_tipo ',' REF def_variable	{ 
+		  															$$ = $1;
+		  															DefVariable dv = (DefVariable)$4;
+		  															dv.setRef(true);
+		  															((List<DefVariable>)$$).add(dv); 
+		  														}  
+		  			| REF def_variable							{ 
+		  															$$ = new ArrayList<DefVariable>();
+		  															DefVariable dv = (DefVariable)$2;
+		  															dv.setRef(true);
+		  															((List<DefVariable>)$$).add(dv);
+		  													    }  
 		  			;
+
 
 tipo_funcion: '(' lista_parametro_tipo_funcion ')' tipo_simple	{ $$ = new TipoFuncion(lexico.getLinea(), lexico.getColumna(), $4, $2); }
 			| '(' lista_parametro_tipo_funcion ')'				{ $$ = new TipoFuncion(lexico.getLinea(), lexico.getColumna(), Void.getInstancia(), $2); }

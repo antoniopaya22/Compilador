@@ -1,5 +1,6 @@
 package generaciondecodigo;
 
+import ast.definicion.DefVariable;
 import ast.expresion.AccesoArray;
 import ast.expresion.AccesoCampoStruct;
 import ast.expresion.Aritmetica;
@@ -37,6 +38,8 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	public Object visit(Variable e, Object param) {
 		e.accept(av, param);
 		cg.load(e.getTipo().sufijo());
+		if(((DefVariable)e.getDefinicion()).isRef())
+			cg.load(e.getTipo().sufijo());
 		return null;
 	}
 

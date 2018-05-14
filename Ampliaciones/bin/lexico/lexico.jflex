@@ -86,6 +86,8 @@ main 				{ this.yylval = yytext(); 	return Parser.MAIN;}
 for 				{ this.yylval = yytext();	return Parser.FOR;}
 // AMPLIACION DOWHILE
 do					{ this.yylval = yytext();	return Parser.DO;}
+// AMPLIACION PARAMETROS REF
+ref					{ this.yylval = yytext();	return Parser.REF;}
 
 // ===== Constantes, Id's, etc ====
 //AMPLIACION TERNARIO

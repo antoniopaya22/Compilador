@@ -9,6 +9,7 @@ public class DefVariable extends AbstractDefinicion implements Sentencia {
 	private Tipo tipo;
 	private String id;
 	private int ambito;
+	private boolean ref;
 	private int offset;
 
 	public DefVariable(int line, int column, Object id, Object tipo) {
@@ -16,6 +17,7 @@ public class DefVariable extends AbstractDefinicion implements Sentencia {
 		this.tipo = (Tipo) tipo;
 		this.id = (String) id;
 		this.offset = -1;
+		this.ref = false;
 	}
 
 	public DefVariable(int line, int column, String id, Tipo tipo) {
@@ -23,6 +25,7 @@ public class DefVariable extends AbstractDefinicion implements Sentencia {
 		this.tipo = tipo;
 		this.id = id;
 		this.offset = -1;
+		this.ref = false;
 	}
 
 	public Tipo getTipo() {
@@ -55,6 +58,14 @@ public class DefVariable extends AbstractDefinicion implements Sentencia {
 
 	public void setOffset(int offset) {
 		this.offset = offset;
+	}
+
+	public boolean isRef() {
+		return ref;
+	}
+
+	public void setRef(boolean ref) {
+		this.ref = ref;
 	}
 
 	@Override
