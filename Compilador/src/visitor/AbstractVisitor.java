@@ -10,6 +10,7 @@ import ast.definicion.DefVariable;
 import ast.expresion.AccesoArray;
 import ast.expresion.AccesoCampoStruct;
 import ast.expresion.Aritmetica;
+import ast.expresion.AsignacionLogica;
 import ast.expresion.Cast;
 import ast.expresion.Comparacion;
 import ast.expresion.InvocacionFuncion;
@@ -79,6 +80,13 @@ public abstract class AbstractVisitor implements Visitor {
 	 */
 	@Override
 	public Object visit(Logica e, Object param) {
+		e.getOp1().accept(this, param);
+		e.getOp2().accept(this, param);
+		return null;
+	}
+	
+	@Override
+	public Object visit(AsignacionLogica e, Object param) {
 		e.getOp1().accept(this, param);
 		e.getOp2().accept(this, param);
 		return null;

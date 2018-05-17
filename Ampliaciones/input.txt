@@ -1,18 +1,13 @@
-var i int;
-var j int;
-
-func f(a int){
-	write(a);
-}
-
-func g(ref a int){
-	write(a);
-}
+var i,j,k int;
 
 func main() {
-  i = 2;
-  j = 6;
-  f(i);
-  write('\n');
-  g(i);
+  i = 5;
+  j = 5;
+  k = 3;
+  
+  if( i^^k ){
+  	write('b','i','e','n');
+  }else{
+  	write('m','a','l');
+  }
 }

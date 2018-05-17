@@ -4,6 +4,7 @@ import ast.definicion.DefFuncion;
 import ast.expresion.AccesoArray;
 import ast.expresion.AccesoCampoStruct;
 import ast.expresion.Aritmetica;
+import ast.expresion.AsignacionLogica;
 import ast.expresion.Cast;
 import ast.expresion.Comparacion;
 import ast.expresion.InvocacionFuncion;
@@ -133,6 +134,17 @@ public class ComprobacionTiposVisitor extends AbstractVisitor {
 
 	@Override
 	public Object visit(Logica e, Object param) {
+		e.getOp1().accept(this, param);
+		e.getOp2().accept(this, param);
+		e.setTipo(e.getOp1().getTipo().logica(e.getOp2().getTipo()));
+		if (e.getTipo() == null)
+			e.setTipo(
+					new TipoError(e.getFila(), e.getColumna(), "La operacion logica no es posible con esos operandos"));
+		return null;
+	}
+	
+	@Override
+	public Object visit(AsignacionLogica e, Object param) {
 		e.getOp1().accept(this, param);
 		e.getOp2().accept(this, param);
 		e.setTipo(e.getOp1().getTipo().logica(e.getOp2().getTipo()));

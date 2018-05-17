@@ -58,6 +58,8 @@ Delimitadores = [{};,]
 {ComentarioVariasLineas}	{   }
 
 // ===== Operadores dobles =====
+"&&="				{ this.yylval = yytext();	return Parser.AND_AS;}
+"||="				{ this.yylval = yytext();	return Parser.OR_AS;}
 "!="				{ this.yylval = yytext();	return Parser.NOT_EQ;}
 "&&"				{ this.yylval = yytext();	return Parser.AND;}
 "||"				{ this.yylval = yytext(); 	return Parser.OR;}

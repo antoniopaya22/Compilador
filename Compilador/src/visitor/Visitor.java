@@ -10,6 +10,7 @@ import ast.definicion.DefVariable;
 import ast.expresion.AccesoArray;
 import ast.expresion.AccesoCampoStruct;
 import ast.expresion.Aritmetica;
+import ast.expresion.AsignacionLogica;
 import ast.expresion.Cast;
 import ast.expresion.Comparacion;
 import ast.expresion.InvocacionFuncion;
@@ -52,6 +53,7 @@ public interface Visitor {
 	public Object visit(Aritmetica e, Object param);
 	public Object visit(AccesoCampoStruct e, Object param);
 	public Object visit(AccesoArray e, Object param);
+	public Object visit(AsignacionLogica asignacionLogica, Object object);
 		//Expresiones unarias
 	public Object visit(MenosUnario e, Object param);
 	public Object visit(NotUnario e, Object param);

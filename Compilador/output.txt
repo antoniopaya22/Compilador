@@ -2,114 +2,378 @@
 #source "input.txt"
 
 	 ' * int i (offset 0)
-	 ' * int n (offset 2)
-	 ' * char c (offset 4)
-	 ' * TipoStruct [campos=[Campo [nombre=intField, tipo=int], Campo [nombre=realField, tipo=float32]]] record (offset 5)
+	 ' * TipoArray [Tipo=int, Tam=4] w (offset 2)
+	 ' * int alltrue (offset 10)
+	 ' * int notallfalse (offset 12)
+	 ' * int anyfalse (offset 14)
+	 ' * int anytrue (offset 16)
+	 ' * float32 d (offset 18)
+	 ' * char c (offset 22)
 call main
 halt
 
-#line	10
- f:
-	 ' * Parametros
-	 ' * int a (offset 8)
-	 ' * float32 c (offset 4)
-	 ' * Variables locales
-	 ' * float32 real (offset -4)
-	 enter 4
-
-#line	12
-	 ' * real = c
-	 push bp
-	 pushi -4
-	 addi
-	 push bp
-	 pushi 4
-	 addi
-	 loadf
-	 storef
-
-#line	13
-	 ' * i = a
-	 pusha 0
-	 push bp
-	 pushi 8
-	 addi
-	 loadi
-	 storei
-
-#line	21
-	 ' * If [condicion=n, cuerpo_if=[Return [expresion=n], If [condicion=n, cuerpo_if=[Return [expresion=n]], cuerpo_else=[]]], cuerpo_else=[Return [expresion=n]]]
-	 pusha 2
-	 loadi
-	 jz label_0
-
-#line	15
-	 ' * Return
-	 pusha 2
-	 loadi
-	 ret 2, 4, 6
-
-#line	19
-	 ' * If [condicion=n, cuerpo_if=[Return [expresion=n]], cuerpo_else=[]]
-	 pusha 2
-	 loadi
-	 jz label_2
-
-#line	17
-	 ' * Return
-	 pusha 2
-	 loadi
-	 ret 2, 4, 6
-	 jmp label_3
- label_2:
- label_3:
-	 jmp label_1
- label_0:
-
-#line	20
-	 ' * Return
-	 pusha 2
-	 loadi
-	 ret 2, 4, 6
- label_1:
-
-#line	25
+#line	8
  main:
 	 ' * Parametros
 	 ' * Variables locales
-	 ' * int i (offset -2)
-	 ' * float32 r (offset -6)
-	 enter 6
+	 enter 0
 
-#line	28
-	 ' * Write part 0
-	 push bp
-	 pushi -2
+#line	9
+	 ' * w[0] = 1
+	 pusha 2
+	 pushi 0
+	 pushi 2
+	 muli
 	 addi
+	 pushi 1
+	 storei
+
+#line	10
+	 ' * w[1] = 2
+	 pusha 2
+	 pushi 1
+	 pushi 2
+	 muli
+	 addi
+	 pushi 2
+	 storei
+
+#line	11
+	 ' * w[2] = 0
+	 pusha 2
+	 pushi 2
+	 pushi 2
+	 muli
+	 addi
+	 pushi 0
+	 storei
+
+#line	12
+	 ' * w[3] = -4
+	 pusha 2
+	 pushi 3
+	 pushi 2
+	 muli
+	 addi
+	 pushi 0
+	 pushi 4
+	 subi
+	 storei
+
+#line	13
+	 ' * i = 0
+	 pusha 0
+	 pushi 0
+	 storei
+
+#line	14
+	 ' * alltrue = 1
+	 pusha 10
+	 pushi 1
+	 storei
+
+#line	15
+	 ' * notallfalse = 0
+	 pusha 12
+	 pushi 0
+	 storei
+
+#line	16
+	 ' * anyfalse = 0
+	 pusha 14
+	 pushi 0
+	 storei
+
+#line	17
+	 ' * anytrue = 0
+	 pusha 16
+	 pushi 0
+	 storei
+
+#line	18
+	 ' * Write part 0
+	 pusha 10
 	 loadi
 	 outi
 	 ' * Write part 1
-
-#line	28
-	 ' * f(n,r)
-	 pusha 2
+	 pusha 12
 	 loadi
-	 push bp
-	 pushi -6
-	 addi
-	 loadf
-	 call f
 	 outi
 	 ' * Write part 2
-	 pusha 5
-	 pushi 0
-	 addi
+	 pusha 14
 	 loadi
 	 outi
 	 ' * Write part 3
-	 pusha 5
+	 pusha 16
+	 loadi
+	 outi
+
+#line	19
+	 ' * Write part 0
+	 pushb 10
+	 outb
+
+#line	27
+	 ' * While [condicion=i < 4, cuerpo=[Asignacion [exp1=alltrue, exp2=alltrue && w[i]], Asignacion [exp1=notallfalse, exp2=notallfalse || w[i]], Asignacion [exp1=anytrue, exp2=anytrue || w[i]], Asignacion [exp1=anyfalse, exp2=anyfalse || !w[i]], Asignacion [exp1=i, exp2=i + 1]]]
+ label_0:
+	 pusha 0
+	 loadi
+	 pushi 4
+	 lti
+	 jz label_1
+
+#line	22
+	 ' * alltrue = alltrue && w[i]
+	 pusha 10
+	 pusha 10
+	 loadi
+	 pusha 2
+	 pusha 0
+	 loadi
 	 pushi 2
+	 muli
 	 addi
-	 loadf
-	 outf
-	 ret 0, 6, 0
+	 loadi
+	 and
+	 pusha 10
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 storei
+	 storei
+
+#line	23
+	 ' * notallfalse = notallfalse || w[i]
+	 pusha 12
+	 pusha 12
+	 loadi
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 or
+	 pusha 12
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 storei
+	 storei
+
+#line	24
+	 ' * anytrue = anytrue || w[i]
+	 pusha 16
+	 pusha 16
+	 loadi
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 or
+	 pusha 16
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 storei
+	 storei
+
+#line	25
+	 ' * anyfalse = anyfalse || !w[i]
+	 pusha 14
+	 pusha 14
+	 loadi
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 not
+	 or
+	 pusha 14
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 not
+	 storei
+	 storei
+
+#line	26
+	 ' * i = i + 1
+	 pusha 0
+	 pusha 0
+	 loadi
+	 pushi 1
+	 addi
+	 storei
+	 jmp label_0
+ label_1:
+
+#line	29
+	 ' * Write part 0
+	 pusha 10
+	 loadi
+	 outi
+	 ' * Write part 1
+	 pusha 12
+	 loadi
+	 not
+	 outi
+	 ' * Write part 2
+	 pusha 16
+	 loadi
+	 outi
+	 ' * Write part 3
+	 pusha 14
+	 loadi
+	 outi
+
+#line	30
+	 ' * Write part 0
+	 pushb 10
+	 outb
+
+#line	32
+	 ' * alltrue = 1
+	 pusha 10
+	 pushi 1
+	 storei
+
+#line	33
+	 ' * i = 0
+	 pusha 0
+	 pushi 0
+	 storei
+
+#line	37
+	 ' * While [condicion=alltrue && w[i], cuerpo=[Escritura [expresion=[i]], Asignacion [exp1=i, exp2=i + 1]]]
+ label_2:
+	 pusha 10
+	 loadi
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 and
+	 pusha 10
+	 pusha 2
+	 pusha 0
+	 loadi
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 storei
+	 jz label_3
+
+#line	35
+	 ' * Write part 0
+	 pusha 0
+	 loadi
+	 outi
+
+#line	36
+	 ' * i = i + 1
+	 pusha 0
+	 pusha 0
+	 loadi
+	 pushi 1
+	 addi
+	 storei
+	 jmp label_2
+ label_3:
+
+#line	39
+	 ' * alltrue = 1
+	 pusha 10
+	 pushi 1
+	 storei
+
+#line	40
+	 ' * i = 0
+	 pusha 0
+	 pushi 0
+	 storei
+
+#line	41
+	 ' * alltrue = alltrue && i || w[0]
+	 pusha 10
+	 pusha 10
+	 loadi
+	 pusha 0
+	 loadi
+	 pusha 2
+	 pushi 0
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 or
+	 pusha 0
+	 pusha 2
+	 pushi 0
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 storei
+	 and
+	 pusha 10
+	 pusha 0
+	 loadi
+	 pusha 2
+	 pushi 0
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 or
+	 pusha 0
+	 pusha 2
+	 pushi 0
+	 pushi 2
+	 muli
+	 addi
+	 loadi
+	 storei
+	 storei
+	 storei
+
+#line	42
+	 ' * Write part 0
+	 pushb 10
+	 outb
+	 ' * Write part 1
+	 pusha 0
+	 loadi
+	 outi
+	 ' * Write part 2
+	 pusha 10
+	 loadi
+	 outi
+	 ret 0, 0, 0

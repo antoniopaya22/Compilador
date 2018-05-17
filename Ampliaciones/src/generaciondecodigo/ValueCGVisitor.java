@@ -139,6 +139,7 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	@Override
 	public Object visit(NotUnario e, Object param){
 		e.getExpresion().accept(this, param);
+		cg.convertTo(e.getExpresion().getTipo(), Entero.getInstancia());
 		cg.not();
 		return null;
 	}

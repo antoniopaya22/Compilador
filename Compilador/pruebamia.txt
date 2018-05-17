@@ -1,0 +1,14 @@
+
+var i,j,k int;
+
+func main() {
+  i = 0;
+  j = 1;
+  k = 0;
+  
+  write(i ||= j,i,j); //111
+  
+  write(i &&= k,i,k); //000
+  
+  (i &&= 2) = 1;	//error
+}

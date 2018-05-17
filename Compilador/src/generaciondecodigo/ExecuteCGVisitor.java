@@ -6,6 +6,7 @@ import ast.Programa;
 import ast.definicion.DefFuncion;
 import ast.definicion.DefVariable;
 import ast.definicion.Definicion;
+import ast.expresion.AsignacionLogica;
 import ast.expresion.Expresion;
 import ast.sentencia.Asignacion;
 import ast.sentencia.Escritura;
@@ -59,6 +60,17 @@ public class ExecuteCGVisitor extends AbstractCGVisitor {
 		e.getExp2().accept(vv, param);
 		cg.convertTo(e.getExp2().getTipo(), e.getExp1().getTipo());
 		cg.store(e.getExp1().getTipo().sufijo());
+		return null;
+	}
+	
+	@Override
+	public Object visit(AsignacionLogica e, Object param) {
+		e.accept(vv, param);
+		cg.generarLinea(e.getFila());
+		e.getOp1().accept(av, param);
+		e.getOp2().accept(vv, param);
+		cg.convertTo(e.getOp2().getTipo(), e.getOp1().getTipo());
+		cg.store(e.getOp1().getTipo().sufijo());
 		return null;
 	}
 

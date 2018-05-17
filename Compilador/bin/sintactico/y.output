@@ -64,46 +64,50 @@
   41            | if_else
   42            | while
   43            | expresion '=' expresion ';'
-  44            | ID '(' lista_expresiones_llamada_fun ')' ';'
+  44            | expresion AND_AS expresion ';'
+  45            | expresion OR_AS expresion ';'
+  46            | ID '(' lista_expresiones_llamada_fun ')' ';'
 
-  45  if_else : IF expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'
-  46          | IF expresion '{' lista_sentencias '}'
-  47          | IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'
+  47  if_else : IF expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'
+  48          | IF expresion '{' lista_sentencias '}'
+  49          | IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'
 
-  48  while : WHILE '(' expresion ')' '{' lista_sentencias '}'
-  49        | WHILE expresion '{' lista_sentencias '}'
+  50  while : WHILE '(' expresion ')' '{' lista_sentencias '}'
+  51        | WHILE expresion '{' lista_sentencias '}'
 
-  50  lista_expresiones_llamada_fun : lista_expresiones
-  51                                |
+  52  lista_expresiones_llamada_fun : lista_expresiones
+  53                                |
 
-  52  lista_expresiones : lista_expresiones ',' expresion
-  53                    | expresion
+  54  lista_expresiones : lista_expresiones ',' expresion
+  55                    | expresion
 
-  54  expresion : expresion '+' expresion
-  55            | expresion '*' expresion
-  56            | expresion '/' expresion
-  57            | expresion '-' expresion
-  58            | expresion '%' expresion
-  59            | expresion EQ expresion
-  60            | expresion NOT_EQ expresion
-  61            | expresion '>' expresion
-  62            | expresion '<' expresion
-  63            | expresion L_EQ expresion
-  64            | expresion G_EQ expresion
-  65            | expresion AND expresion
-  66            | expresion OR expresion
-  67            | ID '(' lista_expresiones_llamada_fun ')'
-  68            | tipo '(' expresion ')'
-  69            | expresion '[' expresion ']'
-  70            | expresion '.' ID
-  71            | expresion '!' expresion
-  72            | '-' expresion
-  73            | '(' expresion ')'
-  74            | '!' expresion
-  75            | ID
-  76            | CTE_CHAR
-  77            | CTE_REAL
-  78            | CTE_ENTERA
+  56  expresion : expresion '+' expresion
+  57            | expresion '*' expresion
+  58            | expresion '/' expresion
+  59            | expresion '-' expresion
+  60            | expresion '%' expresion
+  61            | expresion EQ expresion
+  62            | expresion NOT_EQ expresion
+  63            | expresion '>' expresion
+  64            | expresion '<' expresion
+  65            | expresion L_EQ expresion
+  66            | expresion G_EQ expresion
+  67            | expresion AND expresion
+  68            | expresion OR expresion
+  69            | expresion AND_AS expresion
+  70            | expresion OR_AS expresion
+  71            | ID '(' lista_expresiones_llamada_fun ')'
+  72            | tipo '(' expresion ')'
+  73            | expresion '[' expresion ']'
+  74            | expresion '.' ID
+  75            | expresion '!' expresion
+  76            | '-' expresion
+  77            | '(' expresion ')'
+  78            | '!' expresion
+  79            | ID
+  80            | CTE_CHAR
+  81            | CTE_REAL
+  82            | CTE_ENTERA
 
 state 0
 	$accept : . programa $end  (0)
@@ -659,46 +663,48 @@ state 59
 
 
 state 60
-	expresion : CTE_ENTERA .  (78)
+	expresion : CTE_ENTERA .  (82)
 
-	.  reduce 78
+	.  reduce 82
 
 
 state 61
-	expresion : CTE_CHAR .  (76)
+	expresion : CTE_CHAR .  (80)
 
-	.  reduce 76
+	.  reduce 80
 
 
 state 62
-	expresion : CTE_REAL .  (77)
+	expresion : CTE_REAL .  (81)
 
-	.  reduce 77
+	.  reduce 81
 
 
 state 63
-	sentencia : ID . '(' lista_expresiones_llamada_fun ')' ';'  (44)
-	expresion : ID . '(' lista_expresiones_llamada_fun ')'  (67)
-	expresion : ID .  (75)
+	sentencia : ID . '(' lista_expresiones_llamada_fun ')' ';'  (46)
+	expresion : ID . '(' lista_expresiones_llamada_fun ')'  (71)
+	expresion : ID .  (79)
 
 	'('  shift 79
-	NOT_EQ  reduce 75
-	AND  reduce 75
-	OR  reduce 75
-	EQ  reduce 75
-	L_EQ  reduce 75
-	G_EQ  reduce 75
-	'='  reduce 75
-	'>'  reduce 75
-	'<'  reduce 75
-	'+'  reduce 75
-	'-'  reduce 75
-	'*'  reduce 75
-	'/'  reduce 75
-	'%'  reduce 75
-	'!'  reduce 75
-	'['  reduce 75
-	'.'  reduce 75
+	NOT_EQ  reduce 79
+	AND  reduce 79
+	OR  reduce 79
+	EQ  reduce 79
+	L_EQ  reduce 79
+	G_EQ  reduce 79
+	AND_AS  reduce 79
+	OR_AS  reduce 79
+	'='  reduce 79
+	'>'  reduce 79
+	'<'  reduce 79
+	'+'  reduce 79
+	'-'  reduce 79
+	'*'  reduce 79
+	'/'  reduce 79
+	'%'  reduce 79
+	'!'  reduce 79
+	'['  reduce 79
+	'.'  reduce 79
 
 
 state 64
@@ -716,8 +722,8 @@ state 65
 
 
 state 66
-	while : WHILE . '(' expresion ')' '{' lista_sentencias '}'  (48)
-	while : WHILE . expresion '{' lista_sentencias '}'  (49)
+	while : WHILE . '(' expresion ')' '{' lista_sentencias '}'  (50)
+	while : WHILE . expresion '{' lista_sentencias '}'  (51)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -741,9 +747,9 @@ state 66
 
 
 state 67
-	if_else : IF . expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (45)
-	if_else : IF . expresion '{' lista_sentencias '}'  (46)
-	if_else : IF . '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (47)
+	if_else : IF . expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (47)
+	if_else : IF . expresion '{' lista_sentencias '}'  (48)
+	if_else : IF . '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (49)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -791,7 +797,7 @@ state 68
 
 
 state 69
-	expresion : '-' . expresion  (72)
+	expresion : '-' . expresion  (76)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -815,7 +821,7 @@ state 69
 
 
 state 70
-	expresion : '!' . expresion  (74)
+	expresion : '!' . expresion  (78)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -845,7 +851,7 @@ state 71
 
 
 state 72
-	expresion : '(' . expresion ')'  (73)
+	expresion : '(' . expresion ')'  (77)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -869,7 +875,7 @@ state 72
 
 
 state 73
-	expresion : tipo . '(' expresion ')'  (68)
+	expresion : tipo . '(' expresion ')'  (72)
 
 	'('  shift 91
 	.  error
@@ -883,22 +889,26 @@ state 74
 
 state 75
 	sentencia : expresion . '=' expresion ';'  (43)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
+	sentencia : expresion . AND_AS expresion ';'  (44)
+	sentencia : expresion . OR_AS expresion ';'  (45)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
 
 	NOT_EQ  shift 92
 	AND  shift 93
@@ -906,17 +916,19 @@ state 75
 	EQ  shift 95
 	L_EQ  shift 96
 	G_EQ  shift 97
-	'='  shift 98
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
+	AND_AS  shift 98
+	OR_AS  shift 99
+	'='  shift 100
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
 	.  error
 
 
@@ -952,7 +964,7 @@ state 78
 	'-'  shift 69
 	'!'  shift 70
 	'['  shift 18
-	'}'  shift 109
+	'}'  shift 111
 	'('  shift 72
 	.  error
 
@@ -967,9 +979,9 @@ state 78
 
 
 state 79
-	sentencia : ID '(' . lista_expresiones_llamada_fun ')' ';'  (44)
-	expresion : ID '(' . lista_expresiones_llamada_fun ')'  (67)
-	lista_expresiones_llamada_fun : .  (51)
+	sentencia : ID '(' . lista_expresiones_llamada_fun ')' ';'  (46)
+	expresion : ID '(' . lista_expresiones_llamada_fun ')'  (71)
+	lista_expresiones_llamada_fun : .  (53)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -983,15 +995,15 @@ state 79
 	'!'  shift 70
 	'['  shift 18
 	'('  shift 72
-	')'  reduce 51
+	')'  reduce 53
 
 	llaves_array  goto 20
 	array  goto 21
 	tipo  goto 73
 	struct  goto 23
-	expresion  goto 110
-	lista_expresiones  goto 111
-	lista_expresiones_llamada_fun  goto 112
+	expresion  goto 112
+	lista_expresiones  goto 113
+	lista_expresiones_llamada_fun  goto 114
 
 
 state 80
@@ -1015,8 +1027,8 @@ state 80
 	array  goto 21
 	tipo  goto 73
 	struct  goto 23
-	expresion  goto 110
-	lista_expresiones  goto 113
+	expresion  goto 112
+	lista_expresiones  goto 115
 
 
 state 81
@@ -1040,106 +1052,44 @@ state 81
 	array  goto 21
 	tipo  goto 73
 	struct  goto 23
-	expresion  goto 110
-	lista_expresiones  goto 114
+	expresion  goto 112
+	lista_expresiones  goto 116
 
 
 state 82
-	expresion : ID . '(' lista_expresiones_llamada_fun ')'  (67)
-	expresion : ID .  (75)
+	expresion : ID . '(' lista_expresiones_llamada_fun ')'  (71)
+	expresion : ID .  (79)
 
-	'('  shift 115
-	NOT_EQ  reduce 75
-	AND  reduce 75
-	OR  reduce 75
-	EQ  reduce 75
-	L_EQ  reduce 75
-	G_EQ  reduce 75
-	'='  reduce 75
-	'>'  reduce 75
-	'<'  reduce 75
-	'+'  reduce 75
-	'-'  reduce 75
-	'*'  reduce 75
-	'/'  reduce 75
-	'%'  reduce 75
-	'!'  reduce 75
-	'['  reduce 75
-	']'  reduce 75
-	'{'  reduce 75
-	'.'  reduce 75
-	')'  reduce 75
-	';'  reduce 75
-	','  reduce 75
+	'('  shift 117
+	NOT_EQ  reduce 79
+	AND  reduce 79
+	OR  reduce 79
+	EQ  reduce 79
+	L_EQ  reduce 79
+	G_EQ  reduce 79
+	AND_AS  reduce 79
+	OR_AS  reduce 79
+	'='  reduce 79
+	'>'  reduce 79
+	'<'  reduce 79
+	'+'  reduce 79
+	'-'  reduce 79
+	'*'  reduce 79
+	'/'  reduce 79
+	'%'  reduce 79
+	'!'  reduce 79
+	'['  reduce 79
+	']'  reduce 79
+	'{'  reduce 79
+	'.'  reduce 79
+	')'  reduce 79
+	';'  reduce 79
+	','  reduce 79
 
 
 state 83
-	while : WHILE '(' . expresion ')' '{' lista_sentencias '}'  (48)
-	expresion : '(' . expresion ')'  (73)
-
-	CTE_ENTERA  shift 60
-	CTE_CHAR  shift 61
-	CTE_REAL  shift 62
-	ID  shift 82
-	INT  shift 14
-	FLOAT  shift 15
-	CHAR  shift 16
-	STRUCT  shift 17
-	'-'  shift 69
-	'!'  shift 70
-	'['  shift 18
-	'('  shift 72
-	.  error
-
-	llaves_array  goto 20
-	array  goto 21
-	tipo  goto 73
-	struct  goto 23
-	expresion  goto 116
-
-
-state 84
-	while : WHILE expresion . '{' lista_sentencias '}'  (49)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	NOT_EQ  shift 92
-	AND  shift 93
-	OR  shift 94
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'{'  shift 117
-	'.'  shift 108
-	.  error
-
-
-state 85
-	if_else : IF '(' . expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (47)
-	expresion : '(' . expresion ')'  (73)
+	while : WHILE '(' . expresion ')' '{' lista_sentencias '}'  (50)
+	expresion : '(' . expresion ')'  (77)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1162,25 +1112,26 @@ state 85
 	expresion  goto 118
 
 
-state 86
-	if_else : IF expresion . '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (45)
-	if_else : IF expresion . '{' lista_sentencias '}'  (46)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
+state 84
+	while : WHILE expresion . '{' lista_sentencias '}'  (51)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
 
 	NOT_EQ  shift 92
 	AND  shift 93
@@ -1188,186 +1139,25 @@ state 86
 	EQ  shift 95
 	L_EQ  shift 96
 	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'{'  shift 119
-	'.'  shift 108
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'{'  shift 121
+	'.'  shift 110
 	.  error
 
 
-state 87
-	sentencia : RETURN expresion . ';'  (38)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	NOT_EQ  shift 92
-	AND  shift 93
-	OR  shift 94
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	';'  shift 120
-	.  error
-
-
-state 88
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-	expresion : '-' expresion .  (72)
-
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 72
-	AND  reduce 72
-	OR  reduce 72
-	EQ  reduce 72
-	L_EQ  reduce 72
-	G_EQ  reduce 72
-	'='  reduce 72
-	'>'  reduce 72
-	'<'  reduce 72
-	'+'  reduce 72
-	'-'  reduce 72
-	'*'  reduce 72
-	'/'  reduce 72
-	'%'  reduce 72
-	'!'  reduce 72
-	']'  reduce 72
-	'{'  reduce 72
-	')'  reduce 72
-	';'  reduce 72
-	','  reduce 72
-
-
-state 89
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-	expresion : '!' expresion .  (74)
-
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 74
-	AND  reduce 74
-	OR  reduce 74
-	EQ  reduce 74
-	L_EQ  reduce 74
-	G_EQ  reduce 74
-	'='  reduce 74
-	'>'  reduce 74
-	'<'  reduce 74
-	'+'  reduce 74
-	'-'  reduce 74
-	'*'  reduce 74
-	'/'  reduce 74
-	'%'  reduce 74
-	'!'  reduce 74
-	']'  reduce 74
-	'{'  reduce 74
-	')'  reduce 74
-	';'  reduce 74
-	','  reduce 74
-
-
-state 90
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-	expresion : '(' expresion . ')'  (73)
-
-	NOT_EQ  shift 92
-	AND  shift 93
-	OR  shift 94
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	')'  shift 121
-	.  error
-
-
-state 91
-	expresion : tipo '(' . expresion ')'  (68)
+state 85
+	if_else : IF '(' . expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (49)
+	expresion : '(' . expresion ')'  (77)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1390,80 +1180,232 @@ state 91
 	expresion  goto 122
 
 
-state 92
-	expresion : expresion NOT_EQ . expresion  (60)
+state 86
+	if_else : IF expresion . '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (47)
+	if_else : IF expresion . '{' lista_sentencias '}'  (48)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
 
-	CTE_ENTERA  shift 60
-	CTE_CHAR  shift 61
-	CTE_REAL  shift 62
-	ID  shift 82
-	INT  shift 14
-	FLOAT  shift 15
-	CHAR  shift 16
-	STRUCT  shift 17
-	'-'  shift 69
-	'!'  shift 70
-	'['  shift 18
-	'('  shift 72
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'{'  shift 123
+	'.'  shift 110
 	.  error
 
-	llaves_array  goto 20
-	array  goto 21
-	tipo  goto 73
-	struct  goto 23
-	expresion  goto 123
 
+state 87
+	sentencia : RETURN expresion . ';'  (38)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
 
-state 93
-	expresion : expresion AND . expresion  (65)
-
-	CTE_ENTERA  shift 60
-	CTE_CHAR  shift 61
-	CTE_REAL  shift 62
-	ID  shift 82
-	INT  shift 14
-	FLOAT  shift 15
-	CHAR  shift 16
-	STRUCT  shift 17
-	'-'  shift 69
-	'!'  shift 70
-	'['  shift 18
-	'('  shift 72
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	';'  shift 124
 	.  error
 
-	llaves_array  goto 20
-	array  goto 21
-	tipo  goto 73
-	struct  goto 23
-	expresion  goto 124
+
+state 88
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+	expresion : '-' expresion .  (76)
+
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 76
+	AND  reduce 76
+	OR  reduce 76
+	EQ  reduce 76
+	L_EQ  reduce 76
+	G_EQ  reduce 76
+	AND_AS  reduce 76
+	OR_AS  reduce 76
+	'='  reduce 76
+	'>'  reduce 76
+	'<'  reduce 76
+	'+'  reduce 76
+	'-'  reduce 76
+	'*'  reduce 76
+	'/'  reduce 76
+	'%'  reduce 76
+	'!'  reduce 76
+	']'  reduce 76
+	'{'  reduce 76
+	')'  reduce 76
+	';'  reduce 76
+	','  reduce 76
 
 
-state 94
-	expresion : expresion OR . expresion  (66)
+state 89
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+	expresion : '!' expresion .  (78)
 
-	CTE_ENTERA  shift 60
-	CTE_CHAR  shift 61
-	CTE_REAL  shift 62
-	ID  shift 82
-	INT  shift 14
-	FLOAT  shift 15
-	CHAR  shift 16
-	STRUCT  shift 17
-	'-'  shift 69
-	'!'  shift 70
-	'['  shift 18
-	'('  shift 72
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 78
+	AND  reduce 78
+	OR  reduce 78
+	EQ  reduce 78
+	L_EQ  reduce 78
+	G_EQ  reduce 78
+	AND_AS  reduce 78
+	OR_AS  reduce 78
+	'='  reduce 78
+	'>'  reduce 78
+	'<'  reduce 78
+	'+'  reduce 78
+	'-'  reduce 78
+	'*'  reduce 78
+	'/'  reduce 78
+	'%'  reduce 78
+	'!'  reduce 78
+	']'  reduce 78
+	'{'  reduce 78
+	')'  reduce 78
+	';'  reduce 78
+	','  reduce 78
+
+
+state 90
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+	expresion : '(' expresion . ')'  (77)
+
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	')'  shift 125
 	.  error
 
-	llaves_array  goto 20
-	array  goto 21
-	tipo  goto 73
-	struct  goto 23
-	expresion  goto 125
 
-
-state 95
-	expresion : expresion EQ . expresion  (59)
+state 91
+	expresion : tipo '(' . expresion ')'  (72)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1486,8 +1428,8 @@ state 95
 	expresion  goto 126
 
 
-state 96
-	expresion : expresion L_EQ . expresion  (63)
+state 92
+	expresion : expresion NOT_EQ . expresion  (62)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1510,8 +1452,8 @@ state 96
 	expresion  goto 127
 
 
-state 97
-	expresion : expresion G_EQ . expresion  (64)
+state 93
+	expresion : expresion AND . expresion  (67)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1534,8 +1476,8 @@ state 97
 	expresion  goto 128
 
 
-state 98
-	sentencia : expresion '=' . expresion ';'  (43)
+state 94
+	expresion : expresion OR . expresion  (68)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1558,8 +1500,8 @@ state 98
 	expresion  goto 129
 
 
-state 99
-	expresion : expresion '>' . expresion  (61)
+state 95
+	expresion : expresion EQ . expresion  (61)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1582,8 +1524,8 @@ state 99
 	expresion  goto 130
 
 
-state 100
-	expresion : expresion '<' . expresion  (62)
+state 96
+	expresion : expresion L_EQ . expresion  (65)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1606,8 +1548,8 @@ state 100
 	expresion  goto 131
 
 
-state 101
-	expresion : expresion '+' . expresion  (54)
+state 97
+	expresion : expresion G_EQ . expresion  (66)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1630,8 +1572,9 @@ state 101
 	expresion  goto 132
 
 
-state 102
-	expresion : expresion '-' . expresion  (57)
+state 98
+	sentencia : expresion AND_AS . expresion ';'  (44)
+	expresion : expresion AND_AS . expresion  (69)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1654,8 +1597,9 @@ state 102
 	expresion  goto 133
 
 
-state 103
-	expresion : expresion '*' . expresion  (55)
+state 99
+	sentencia : expresion OR_AS . expresion ';'  (45)
+	expresion : expresion OR_AS . expresion  (70)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1678,8 +1622,8 @@ state 103
 	expresion  goto 134
 
 
-state 104
-	expresion : expresion '/' . expresion  (56)
+state 100
+	sentencia : expresion '=' . expresion ';'  (43)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1702,8 +1646,8 @@ state 104
 	expresion  goto 135
 
 
-state 105
-	expresion : expresion '%' . expresion  (58)
+state 101
+	expresion : expresion '>' . expresion  (63)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1726,8 +1670,8 @@ state 105
 	expresion  goto 136
 
 
-state 106
-	expresion : expresion '!' . expresion  (71)
+state 102
+	expresion : expresion '<' . expresion  (64)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1750,8 +1694,8 @@ state 106
 	expresion  goto 137
 
 
-state 107
-	expresion : expresion '[' . expresion ']'  (69)
+state 103
+	expresion : expresion '+' . expresion  (56)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1774,95 +1718,8 @@ state 107
 	expresion  goto 138
 
 
-state 108
-	expresion : expresion '.' . ID  (70)
-
-	ID  shift 139
-	.  error
-
-
-state 109
-	main : FUNC main_id '(' ')' '{' lista_def_variables lista_sentencias '}' .  (33)
-
-	.  reduce 33
-
-
-state 110
-	lista_expresiones : expresion .  (53)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	NOT_EQ  shift 92
-	AND  shift 93
-	OR  shift 94
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	')'  reduce 53
-	','  reduce 53
-
-
-state 111
-	lista_expresiones_llamada_fun : lista_expresiones .  (50)
-	lista_expresiones : lista_expresiones . ',' expresion  (52)
-
-	','  shift 140
-	')'  reduce 50
-
-
-state 112
-	sentencia : ID '(' lista_expresiones_llamada_fun . ')' ';'  (44)
-	expresion : ID '(' lista_expresiones_llamada_fun . ')'  (67)
-
-	')'  shift 141
-	.  error
-
-
-state 113
-	sentencia : READ '(' lista_expresiones . ')' ';'  (39)
-	lista_expresiones : lista_expresiones . ',' expresion  (52)
-
-	')'  shift 142
-	','  shift 140
-	.  error
-
-
-state 114
-	sentencia : WRITE '(' lista_expresiones . ')' ';'  (40)
-	lista_expresiones : lista_expresiones . ',' expresion  (52)
-
-	')'  shift 143
-	','  shift 140
-	.  error
-
-
-state 115
-	expresion : ID '(' . lista_expresiones_llamada_fun ')'  (67)
-	lista_expresiones_llamada_fun : .  (51)
+state 104
+	expresion : expresion '-' . expresion  (59)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -1876,85 +1733,168 @@ state 115
 	'!'  shift 70
 	'['  shift 18
 	'('  shift 72
-	')'  reduce 51
+	.  error
 
 	llaves_array  goto 20
 	array  goto 21
 	tipo  goto 73
 	struct  goto 23
-	expresion  goto 110
-	lista_expresiones  goto 111
-	lista_expresiones_llamada_fun  goto 144
+	expresion  goto 139
 
 
-state 116
-	while : WHILE '(' expresion . ')' '{' lista_sentencias '}'  (48)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-	expresion : '(' expresion . ')'  (73)
+state 105
+	expresion : expresion '*' . expresion  (57)
 
-	NOT_EQ  shift 92
-	AND  shift 93
-	OR  shift 94
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	')'  shift 145
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 82
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	expresion  goto 140
+
+
+state 106
+	expresion : expresion '/' . expresion  (58)
+
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 82
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	expresion  goto 141
+
+
+state 107
+	expresion : expresion '%' . expresion  (60)
+
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 82
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	expresion  goto 142
+
+
+state 108
+	expresion : expresion '!' . expresion  (75)
+
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 82
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	expresion  goto 143
+
+
+state 109
+	expresion : expresion '[' . expresion ']'  (73)
+
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 82
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	expresion  goto 144
+
+
+state 110
+	expresion : expresion '.' . ID  (74)
+
+	ID  shift 145
 	.  error
 
 
-state 117
-	while : WHILE expresion '{' . lista_sentencias '}'  (49)
-	lista_sentencias : .  (37)
+state 111
+	main : FUNC main_id '(' ')' '{' lista_def_variables lista_sentencias '}' .  (33)
 
-	.  reduce 37
-
-	lista_sentencias  goto 146
+	.  reduce 33
 
 
-state 118
-	if_else : IF '(' expresion . ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (47)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-	expresion : '(' expresion . ')'  (73)
+state 112
+	lista_expresiones : expresion .  (55)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
 
 	NOT_EQ  shift 92
 	AND  shift 93
@@ -1962,357 +1902,104 @@ state 118
 	EQ  shift 95
 	L_EQ  shift 96
 	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	')'  reduce 55
+	','  reduce 55
+
+
+state 113
+	lista_expresiones_llamada_fun : lista_expresiones .  (52)
+	lista_expresiones : lista_expresiones . ',' expresion  (54)
+
+	','  shift 146
+	')'  reduce 52
+
+
+state 114
+	sentencia : ID '(' lista_expresiones_llamada_fun . ')' ';'  (46)
+	expresion : ID '(' lista_expresiones_llamada_fun . ')'  (71)
+
 	')'  shift 147
 	.  error
 
 
-state 119
-	if_else : IF expresion '{' . lista_sentencias '}' ELSE '{' lista_sentencias '}'  (45)
-	if_else : IF expresion '{' . lista_sentencias '}'  (46)
-	lista_sentencias : .  (37)
+state 115
+	sentencia : READ '(' lista_expresiones . ')' ';'  (39)
+	lista_expresiones : lista_expresiones . ',' expresion  (54)
 
-	.  reduce 37
-
-	lista_sentencias  goto 148
-
-
-state 120
-	sentencia : RETURN expresion ';' .  (38)
-
-	.  reduce 38
+	')'  shift 148
+	','  shift 146
+	.  error
 
 
-state 121
-	expresion : '(' expresion ')' .  (73)
+state 116
+	sentencia : WRITE '(' lista_expresiones . ')' ';'  (40)
+	lista_expresiones : lista_expresiones . ',' expresion  (54)
 
-	.  reduce 73
-
-
-state 122
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : tipo '(' expresion . ')'  (68)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	NOT_EQ  shift 92
-	AND  shift 93
-	OR  shift 94
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
 	')'  shift 149
+	','  shift 146
 	.  error
 
 
-state 123
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion NOT_EQ expresion .  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
+state 117
+	expresion : ID '(' . lista_expresiones_llamada_fun ')'  (71)
+	lista_expresiones_llamada_fun : .  (53)
 
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 60
-	AND  reduce 60
-	OR  reduce 60
-	EQ  reduce 60
-	'='  reduce 60
-	']'  reduce 60
-	'{'  reduce 60
-	')'  reduce 60
-	';'  reduce 60
-	','  reduce 60
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 82
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'('  shift 72
+	')'  reduce 53
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	expresion  goto 112
+	lista_expresiones  goto 113
+	lista_expresiones_llamada_fun  goto 150
 
 
-state 124
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion AND expresion .  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	NOT_EQ  shift 92
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	AND  reduce 65
-	OR  reduce 65
-	'='  reduce 65
-	']'  reduce 65
-	'{'  reduce 65
-	')'  reduce 65
-	';'  reduce 65
-	','  reduce 65
-
-
-state 125
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion OR expresion .  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	NOT_EQ  shift 92
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	AND  reduce 66
-	OR  reduce 66
-	'='  reduce 66
-	']'  reduce 66
-	'{'  reduce 66
-	')'  reduce 66
-	';'  reduce 66
-	','  reduce 66
-
-
-state 126
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion EQ expresion .  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 59
-	AND  reduce 59
-	OR  reduce 59
-	EQ  reduce 59
-	'='  reduce 59
-	']'  reduce 59
-	'{'  reduce 59
-	')'  reduce 59
-	';'  reduce 59
-	','  reduce 59
-
-
-state 127
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion L_EQ expresion .  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 63
-	AND  reduce 63
-	OR  reduce 63
-	EQ  reduce 63
-	L_EQ  reduce 63
-	G_EQ  reduce 63
-	'='  reduce 63
-	'>'  reduce 63
-	'<'  reduce 63
-	']'  reduce 63
-	'{'  reduce 63
-	')'  reduce 63
-	';'  reduce 63
-	','  reduce 63
-
-
-state 128
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion G_EQ expresion .  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 64
-	AND  reduce 64
-	OR  reduce 64
-	EQ  reduce 64
-	L_EQ  reduce 64
-	G_EQ  reduce 64
-	'='  reduce 64
-	'>'  reduce 64
-	'<'  reduce 64
-	']'  reduce 64
-	'{'  reduce 64
-	')'  reduce 64
-	';'  reduce 64
-	','  reduce 64
-
-
-state 129
-	sentencia : expresion '=' expresion . ';'  (43)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
+state 118
+	while : WHILE '(' expresion . ')' '{' lista_sentencias '}'  (50)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+	expresion : '(' expresion . ')'  (77)
 
 	NOT_EQ  shift 92
 	AND  shift 93
@@ -2320,411 +2007,24 @@ state 129
 	EQ  shift 95
 	L_EQ  shift 96
 	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	';'  shift 150
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	')'  shift 151
 	.  error
 
 
-state 130
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion '>' expresion .  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 61
-	AND  reduce 61
-	OR  reduce 61
-	EQ  reduce 61
-	L_EQ  reduce 61
-	G_EQ  reduce 61
-	'='  reduce 61
-	'>'  reduce 61
-	'<'  reduce 61
-	']'  reduce 61
-	'{'  reduce 61
-	')'  reduce 61
-	';'  reduce 61
-	','  reduce 61
-
-
-state 131
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion '<' expresion .  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 62
-	AND  reduce 62
-	OR  reduce 62
-	EQ  reduce 62
-	L_EQ  reduce 62
-	G_EQ  reduce 62
-	'='  reduce 62
-	'>'  reduce 62
-	'<'  reduce 62
-	']'  reduce 62
-	'{'  reduce 62
-	')'  reduce 62
-	';'  reduce 62
-	','  reduce 62
-
-
-state 132
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion '+' expresion .  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 54
-	AND  reduce 54
-	OR  reduce 54
-	EQ  reduce 54
-	L_EQ  reduce 54
-	G_EQ  reduce 54
-	'='  reduce 54
-	'>'  reduce 54
-	'<'  reduce 54
-	'+'  reduce 54
-	'-'  reduce 54
-	']'  reduce 54
-	'{'  reduce 54
-	')'  reduce 54
-	';'  reduce 54
-	','  reduce 54
-
-
-state 133
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion '-' expresion .  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 57
-	AND  reduce 57
-	OR  reduce 57
-	EQ  reduce 57
-	L_EQ  reduce 57
-	G_EQ  reduce 57
-	'='  reduce 57
-	'>'  reduce 57
-	'<'  reduce 57
-	'+'  reduce 57
-	'-'  reduce 57
-	']'  reduce 57
-	'{'  reduce 57
-	')'  reduce 57
-	';'  reduce 57
-	','  reduce 57
-
-
-state 134
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion '*' expresion .  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 55
-	AND  reduce 55
-	OR  reduce 55
-	EQ  reduce 55
-	L_EQ  reduce 55
-	G_EQ  reduce 55
-	'='  reduce 55
-	'>'  reduce 55
-	'<'  reduce 55
-	'+'  reduce 55
-	'-'  reduce 55
-	'*'  reduce 55
-	'/'  reduce 55
-	'%'  reduce 55
-	']'  reduce 55
-	'{'  reduce 55
-	')'  reduce 55
-	';'  reduce 55
-	','  reduce 55
-
-
-state 135
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion '/' expresion .  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 56
-	AND  reduce 56
-	OR  reduce 56
-	EQ  reduce 56
-	L_EQ  reduce 56
-	G_EQ  reduce 56
-	'='  reduce 56
-	'>'  reduce 56
-	'<'  reduce 56
-	'+'  reduce 56
-	'-'  reduce 56
-	'*'  reduce 56
-	'/'  reduce 56
-	'%'  reduce 56
-	']'  reduce 56
-	'{'  reduce 56
-	')'  reduce 56
-	';'  reduce 56
-	','  reduce 56
-
-
-state 136
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion '%' expresion .  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 58
-	AND  reduce 58
-	OR  reduce 58
-	EQ  reduce 58
-	L_EQ  reduce 58
-	G_EQ  reduce 58
-	'='  reduce 58
-	'>'  reduce 58
-	'<'  reduce 58
-	'+'  reduce 58
-	'-'  reduce 58
-	'*'  reduce 58
-	'/'  reduce 58
-	'%'  reduce 58
-	']'  reduce 58
-	'{'  reduce 58
-	')'  reduce 58
-	';'  reduce 58
-	','  reduce 58
-
-
-state 137
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-	expresion : expresion '!' expresion .  (71)
-
-	'['  shift 107
-	'.'  shift 108
-	NOT_EQ  reduce 71
-	AND  reduce 71
-	OR  reduce 71
-	EQ  reduce 71
-	L_EQ  reduce 71
-	G_EQ  reduce 71
-	'='  reduce 71
-	'>'  reduce 71
-	'<'  reduce 71
-	'+'  reduce 71
-	'-'  reduce 71
-	'*'  reduce 71
-	'/'  reduce 71
-	'%'  reduce 71
-	'!'  reduce 71
-	']'  reduce 71
-	'{'  reduce 71
-	')'  reduce 71
-	';'  reduce 71
-	','  reduce 71
-
-
-state 138
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion '[' expresion . ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
-
-	NOT_EQ  shift 92
-	AND  shift 93
-	OR  shift 94
-	EQ  shift 95
-	L_EQ  shift 96
-	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	']'  shift 151
-	'.'  shift 108
-	.  error
-
-
-state 139
-	expresion : expresion '.' ID .  (70)
-
-	.  reduce 70
-
-
-state 140
-	lista_expresiones : lista_expresiones ',' . expresion  (52)
+state 119
+	expresion : expresion AND_AS . expresion  (69)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -2747,79 +2047,20 @@ state 140
 	expresion  goto 152
 
 
-state 141
-	sentencia : ID '(' lista_expresiones_llamada_fun ')' . ';'  (44)
-	expresion : ID '(' lista_expresiones_llamada_fun ')' .  (67)
-
-	';'  shift 153
-	NOT_EQ  reduce 67
-	AND  reduce 67
-	OR  reduce 67
-	EQ  reduce 67
-	L_EQ  reduce 67
-	G_EQ  reduce 67
-	'='  reduce 67
-	'>'  reduce 67
-	'<'  reduce 67
-	'+'  reduce 67
-	'-'  reduce 67
-	'*'  reduce 67
-	'/'  reduce 67
-	'%'  reduce 67
-	'!'  reduce 67
-	'['  reduce 67
-	'.'  reduce 67
-
-
-state 142
-	sentencia : READ '(' lista_expresiones ')' . ';'  (39)
-
-	';'  shift 154
-	.  error
-
-
-state 143
-	sentencia : WRITE '(' lista_expresiones ')' . ';'  (40)
-
-	';'  shift 155
-	.  error
-
-
-state 144
-	expresion : ID '(' lista_expresiones_llamada_fun . ')'  (67)
-
-	')'  shift 156
-	.  error
-
-
-state 145
-	while : WHILE '(' expresion ')' . '{' lista_sentencias '}'  (48)
-	expresion : '(' expresion ')' .  (73)
-
-	.  reduce 73
-
-
-state 146
-	lista_sentencias : lista_sentencias . sentencia  (36)
-	while : WHILE expresion '{' lista_sentencias . '}'  (49)
+state 120
+	expresion : expresion OR_AS . expresion  (70)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
 	CTE_REAL  shift 62
-	ID  shift 63
-	READ  shift 64
-	WRITE  shift 65
-	WHILE  shift 66
-	IF  shift 67
+	ID  shift 82
 	INT  shift 14
 	FLOAT  shift 15
 	CHAR  shift 16
 	STRUCT  shift 17
-	RETURN  shift 68
 	'-'  shift 69
 	'!'  shift 70
 	'['  shift 18
-	'}'  shift 158
 	'('  shift 72
 	.  error
 
@@ -2827,90 +2068,39 @@ state 146
 	array  goto 21
 	tipo  goto 73
 	struct  goto 23
-	sentencia  goto 74
-	expresion  goto 75
-	if_else  goto 76
-	while  goto 77
+	expresion  goto 153
 
 
-state 147
-	if_else : IF '(' expresion ')' . '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (47)
-	expresion : '(' expresion ')' .  (73)
+state 121
+	while : WHILE expresion '{' . lista_sentencias '}'  (51)
+	lista_sentencias : .  (37)
 
-	.  reduce 73
+	.  reduce 37
 
-
-state 148
-	lista_sentencias : lista_sentencias . sentencia  (36)
-	if_else : IF expresion '{' lista_sentencias . '}' ELSE '{' lista_sentencias '}'  (45)
-	if_else : IF expresion '{' lista_sentencias . '}'  (46)
-
-	CTE_ENTERA  shift 60
-	CTE_CHAR  shift 61
-	CTE_REAL  shift 62
-	ID  shift 63
-	READ  shift 64
-	WRITE  shift 65
-	WHILE  shift 66
-	IF  shift 67
-	INT  shift 14
-	FLOAT  shift 15
-	CHAR  shift 16
-	STRUCT  shift 17
-	RETURN  shift 68
-	'-'  shift 69
-	'!'  shift 70
-	'['  shift 18
-	'}'  shift 160
-	'('  shift 72
-	.  error
-
-	llaves_array  goto 20
-	array  goto 21
-	tipo  goto 73
-	struct  goto 23
-	sentencia  goto 74
-	expresion  goto 75
-	if_else  goto 76
-	while  goto 77
+	lista_sentencias  goto 154
 
 
-state 149
-	expresion : tipo '(' expresion ')' .  (68)
-
-	.  reduce 68
-
-
-state 150
-	sentencia : expresion '=' expresion ';' .  (43)
-
-	.  reduce 43
-
-
-state 151
-	expresion : expresion '[' expresion ']' .  (69)
-
-	.  reduce 69
-
-
-state 152
-	lista_expresiones : lista_expresiones ',' expresion .  (52)
-	expresion : expresion . '+' expresion  (54)
-	expresion : expresion . '*' expresion  (55)
-	expresion : expresion . '/' expresion  (56)
-	expresion : expresion . '-' expresion  (57)
-	expresion : expresion . '%' expresion  (58)
-	expresion : expresion . EQ expresion  (59)
-	expresion : expresion . NOT_EQ expresion  (60)
-	expresion : expresion . '>' expresion  (61)
-	expresion : expresion . '<' expresion  (62)
-	expresion : expresion . L_EQ expresion  (63)
-	expresion : expresion . G_EQ expresion  (64)
-	expresion : expresion . AND expresion  (65)
-	expresion : expresion . OR expresion  (66)
-	expresion : expresion . '[' expresion ']'  (69)
-	expresion : expresion . '.' ID  (70)
-	expresion : expresion . '!' expresion  (71)
+state 122
+	if_else : IF '(' expresion . ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (49)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+	expresion : '(' expresion . ')'  (77)
 
 	NOT_EQ  shift 92
 	AND  shift 93
@@ -2918,200 +2108,1142 @@ state 152
 	EQ  shift 95
 	L_EQ  shift 96
 	G_EQ  shift 97
-	'>'  shift 99
-	'<'  shift 100
-	'+'  shift 101
-	'-'  shift 102
-	'*'  shift 103
-	'/'  shift 104
-	'%'  shift 105
-	'!'  shift 106
-	'['  shift 107
-	'.'  shift 108
-	')'  reduce 52
-	','  reduce 52
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	')'  shift 155
+	.  error
+
+
+state 123
+	if_else : IF expresion '{' . lista_sentencias '}' ELSE '{' lista_sentencias '}'  (47)
+	if_else : IF expresion '{' . lista_sentencias '}'  (48)
+	lista_sentencias : .  (37)
+
+	.  reduce 37
+
+	lista_sentencias  goto 156
+
+
+state 124
+	sentencia : RETURN expresion ';' .  (38)
+
+	.  reduce 38
+
+
+state 125
+	expresion : '(' expresion ')' .  (77)
+
+	.  reduce 77
+
+
+state 126
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : tipo '(' expresion . ')'  (72)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	')'  shift 157
+	.  error
+
+
+state 127
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion NOT_EQ expresion .  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	L_EQ  shift 96
+	G_EQ  shift 97
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 62
+	AND  reduce 62
+	OR  reduce 62
+	EQ  reduce 62
+	AND_AS  reduce 62
+	OR_AS  reduce 62
+	'='  reduce 62
+	']'  reduce 62
+	'{'  reduce 62
+	')'  reduce 62
+	';'  reduce 62
+	','  reduce 62
+
+
+state 128
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion AND expresion .  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	AND  reduce 67
+	OR  reduce 67
+	AND_AS  reduce 67
+	OR_AS  reduce 67
+	'='  reduce 67
+	']'  reduce 67
+	'{'  reduce 67
+	')'  reduce 67
+	';'  reduce 67
+	','  reduce 67
+
+
+state 129
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion OR expresion .  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	AND  reduce 68
+	OR  reduce 68
+	AND_AS  reduce 68
+	OR_AS  reduce 68
+	'='  reduce 68
+	']'  reduce 68
+	'{'  reduce 68
+	')'  reduce 68
+	';'  reduce 68
+	','  reduce 68
+
+
+state 130
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion EQ expresion .  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	L_EQ  shift 96
+	G_EQ  shift 97
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 61
+	AND  reduce 61
+	OR  reduce 61
+	EQ  reduce 61
+	AND_AS  reduce 61
+	OR_AS  reduce 61
+	'='  reduce 61
+	']'  reduce 61
+	'{'  reduce 61
+	')'  reduce 61
+	';'  reduce 61
+	','  reduce 61
+
+
+state 131
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion L_EQ expresion .  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 65
+	AND  reduce 65
+	OR  reduce 65
+	EQ  reduce 65
+	L_EQ  reduce 65
+	G_EQ  reduce 65
+	AND_AS  reduce 65
+	OR_AS  reduce 65
+	'='  reduce 65
+	'>'  reduce 65
+	'<'  reduce 65
+	']'  reduce 65
+	'{'  reduce 65
+	')'  reduce 65
+	';'  reduce 65
+	','  reduce 65
+
+
+state 132
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion G_EQ expresion .  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 66
+	AND  reduce 66
+	OR  reduce 66
+	EQ  reduce 66
+	L_EQ  reduce 66
+	G_EQ  reduce 66
+	AND_AS  reduce 66
+	OR_AS  reduce 66
+	'='  reduce 66
+	'>'  reduce 66
+	'<'  reduce 66
+	']'  reduce 66
+	'{'  reduce 66
+	')'  reduce 66
+	';'  reduce 66
+	','  reduce 66
+
+
+state 133
+	sentencia : expresion AND_AS expresion . ';'  (44)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion AND_AS expresion .  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	';'  shift 158
+	'='  reduce 69
+
+
+state 134
+	sentencia : expresion OR_AS expresion . ';'  (45)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion OR_AS expresion .  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	';'  shift 159
+	'='  reduce 70
+
+
+state 135
+	sentencia : expresion '=' expresion . ';'  (43)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	';'  shift 160
+	.  error
+
+
+state 136
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion '>' expresion .  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 63
+	AND  reduce 63
+	OR  reduce 63
+	EQ  reduce 63
+	L_EQ  reduce 63
+	G_EQ  reduce 63
+	AND_AS  reduce 63
+	OR_AS  reduce 63
+	'='  reduce 63
+	'>'  reduce 63
+	'<'  reduce 63
+	']'  reduce 63
+	'{'  reduce 63
+	')'  reduce 63
+	';'  reduce 63
+	','  reduce 63
+
+
+state 137
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion '<' expresion .  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 64
+	AND  reduce 64
+	OR  reduce 64
+	EQ  reduce 64
+	L_EQ  reduce 64
+	G_EQ  reduce 64
+	AND_AS  reduce 64
+	OR_AS  reduce 64
+	'='  reduce 64
+	'>'  reduce 64
+	'<'  reduce 64
+	']'  reduce 64
+	'{'  reduce 64
+	')'  reduce 64
+	';'  reduce 64
+	','  reduce 64
+
+
+state 138
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion '+' expresion .  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 56
+	AND  reduce 56
+	OR  reduce 56
+	EQ  reduce 56
+	L_EQ  reduce 56
+	G_EQ  reduce 56
+	AND_AS  reduce 56
+	OR_AS  reduce 56
+	'='  reduce 56
+	'>'  reduce 56
+	'<'  reduce 56
+	'+'  reduce 56
+	'-'  reduce 56
+	']'  reduce 56
+	'{'  reduce 56
+	')'  reduce 56
+	';'  reduce 56
+	','  reduce 56
+
+
+state 139
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion '-' expresion .  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 59
+	AND  reduce 59
+	OR  reduce 59
+	EQ  reduce 59
+	L_EQ  reduce 59
+	G_EQ  reduce 59
+	AND_AS  reduce 59
+	OR_AS  reduce 59
+	'='  reduce 59
+	'>'  reduce 59
+	'<'  reduce 59
+	'+'  reduce 59
+	'-'  reduce 59
+	']'  reduce 59
+	'{'  reduce 59
+	')'  reduce 59
+	';'  reduce 59
+	','  reduce 59
+
+
+state 140
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion '*' expresion .  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 57
+	AND  reduce 57
+	OR  reduce 57
+	EQ  reduce 57
+	L_EQ  reduce 57
+	G_EQ  reduce 57
+	AND_AS  reduce 57
+	OR_AS  reduce 57
+	'='  reduce 57
+	'>'  reduce 57
+	'<'  reduce 57
+	'+'  reduce 57
+	'-'  reduce 57
+	'*'  reduce 57
+	'/'  reduce 57
+	'%'  reduce 57
+	']'  reduce 57
+	'{'  reduce 57
+	')'  reduce 57
+	';'  reduce 57
+	','  reduce 57
+
+
+state 141
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion '/' expresion .  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 58
+	AND  reduce 58
+	OR  reduce 58
+	EQ  reduce 58
+	L_EQ  reduce 58
+	G_EQ  reduce 58
+	AND_AS  reduce 58
+	OR_AS  reduce 58
+	'='  reduce 58
+	'>'  reduce 58
+	'<'  reduce 58
+	'+'  reduce 58
+	'-'  reduce 58
+	'*'  reduce 58
+	'/'  reduce 58
+	'%'  reduce 58
+	']'  reduce 58
+	'{'  reduce 58
+	')'  reduce 58
+	';'  reduce 58
+	','  reduce 58
+
+
+state 142
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion '%' expresion .  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 60
+	AND  reduce 60
+	OR  reduce 60
+	EQ  reduce 60
+	L_EQ  reduce 60
+	G_EQ  reduce 60
+	AND_AS  reduce 60
+	OR_AS  reduce 60
+	'='  reduce 60
+	'>'  reduce 60
+	'<'  reduce 60
+	'+'  reduce 60
+	'-'  reduce 60
+	'*'  reduce 60
+	'/'  reduce 60
+	'%'  reduce 60
+	']'  reduce 60
+	'{'  reduce 60
+	')'  reduce 60
+	';'  reduce 60
+	','  reduce 60
+
+
+state 143
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+	expresion : expresion '!' expresion .  (75)
+
+	'['  shift 109
+	'.'  shift 110
+	NOT_EQ  reduce 75
+	AND  reduce 75
+	OR  reduce 75
+	EQ  reduce 75
+	L_EQ  reduce 75
+	G_EQ  reduce 75
+	AND_AS  reduce 75
+	OR_AS  reduce 75
+	'='  reduce 75
+	'>'  reduce 75
+	'<'  reduce 75
+	'+'  reduce 75
+	'-'  reduce 75
+	'*'  reduce 75
+	'/'  reduce 75
+	'%'  reduce 75
+	'!'  reduce 75
+	']'  reduce 75
+	'{'  reduce 75
+	')'  reduce 75
+	';'  reduce 75
+	','  reduce 75
+
+
+state 144
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion '[' expresion . ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	']'  shift 161
+	'.'  shift 110
+	.  error
+
+
+state 145
+	expresion : expresion '.' ID .  (74)
+
+	.  reduce 74
+
+
+state 146
+	lista_expresiones : lista_expresiones ',' . expresion  (54)
+
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 82
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	expresion  goto 162
+
+
+state 147
+	sentencia : ID '(' lista_expresiones_llamada_fun ')' . ';'  (46)
+	expresion : ID '(' lista_expresiones_llamada_fun ')' .  (71)
+
+	';'  shift 163
+	NOT_EQ  reduce 71
+	AND  reduce 71
+	OR  reduce 71
+	EQ  reduce 71
+	L_EQ  reduce 71
+	G_EQ  reduce 71
+	AND_AS  reduce 71
+	OR_AS  reduce 71
+	'='  reduce 71
+	'>'  reduce 71
+	'<'  reduce 71
+	'+'  reduce 71
+	'-'  reduce 71
+	'*'  reduce 71
+	'/'  reduce 71
+	'%'  reduce 71
+	'!'  reduce 71
+	'['  reduce 71
+	'.'  reduce 71
+
+
+state 148
+	sentencia : READ '(' lista_expresiones ')' . ';'  (39)
+
+	';'  shift 164
+	.  error
+
+
+state 149
+	sentencia : WRITE '(' lista_expresiones ')' . ';'  (40)
+
+	';'  shift 165
+	.  error
+
+
+state 150
+	expresion : ID '(' lista_expresiones_llamada_fun . ')'  (71)
+
+	')'  shift 166
+	.  error
+
+
+state 151
+	while : WHILE '(' expresion ')' . '{' lista_sentencias '}'  (50)
+	expresion : '(' expresion ')' .  (77)
+
+	.  reduce 77
+
+
+state 152
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion AND_AS expresion .  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	'='  reduce 69
+	']'  reduce 69
+	'{'  reduce 69
+	')'  reduce 69
+	';'  reduce 69
+	','  reduce 69
 
 
 state 153
-	sentencia : ID '(' lista_expresiones_llamada_fun ')' ';' .  (44)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion OR_AS expresion .  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
 
-	.  reduce 44
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	'='  reduce 70
+	']'  reduce 70
+	'{'  reduce 70
+	')'  reduce 70
+	';'  reduce 70
+	','  reduce 70
 
 
 state 154
-	sentencia : READ '(' lista_expresiones ')' ';' .  (39)
+	lista_sentencias : lista_sentencias . sentencia  (36)
+	while : WHILE expresion '{' lista_sentencias . '}'  (51)
 
-	.  reduce 39
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 63
+	READ  shift 64
+	WRITE  shift 65
+	WHILE  shift 66
+	IF  shift 67
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	RETURN  shift 68
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'}'  shift 168
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	sentencia  goto 74
+	expresion  goto 75
+	if_else  goto 76
+	while  goto 77
 
 
 state 155
-	sentencia : WRITE '(' lista_expresiones ')' ';' .  (40)
+	if_else : IF '(' expresion ')' . '{' lista_sentencias '}' ELSE '{' lista_sentencias '}'  (49)
+	expresion : '(' expresion ')' .  (77)
 
-	.  reduce 40
+	.  reduce 77
 
 
 state 156
-	expresion : ID '(' lista_expresiones_llamada_fun ')' .  (67)
-
-	.  reduce 67
-
-
-state 157
-	while : WHILE '(' expresion ')' '{' . lista_sentencias '}'  (48)
-	lista_sentencias : .  (37)
-
-	.  reduce 37
-
-	lista_sentencias  goto 161
-
-
-state 158
-	while : WHILE expresion '{' lista_sentencias '}' .  (49)
-
-	.  reduce 49
-
-
-state 159
-	if_else : IF '(' expresion ')' '{' . lista_sentencias '}' ELSE '{' lista_sentencias '}'  (47)
-	lista_sentencias : .  (37)
-
-	.  reduce 37
-
-	lista_sentencias  goto 162
-
-
-state 160
-	if_else : IF expresion '{' lista_sentencias '}' . ELSE '{' lista_sentencias '}'  (45)
-	if_else : IF expresion '{' lista_sentencias '}' .  (46)
-
-	ELSE  shift 163
-	CTE_ENTERA  reduce 46
-	CTE_CHAR  reduce 46
-	CTE_REAL  reduce 46
-	ID  reduce 46
-	READ  reduce 46
-	WRITE  reduce 46
-	WHILE  reduce 46
-	IF  reduce 46
-	INT  reduce 46
-	FLOAT  reduce 46
-	CHAR  reduce 46
-	STRUCT  reduce 46
-	RETURN  reduce 46
-	'-'  reduce 46
-	'!'  reduce 46
-	'['  reduce 46
-	'}'  reduce 46
-	'('  reduce 46
-
-
-state 161
 	lista_sentencias : lista_sentencias . sentencia  (36)
-	while : WHILE '(' expresion ')' '{' lista_sentencias . '}'  (48)
-
-	CTE_ENTERA  shift 60
-	CTE_CHAR  shift 61
-	CTE_REAL  shift 62
-	ID  shift 63
-	READ  shift 64
-	WRITE  shift 65
-	WHILE  shift 66
-	IF  shift 67
-	INT  shift 14
-	FLOAT  shift 15
-	CHAR  shift 16
-	STRUCT  shift 17
-	RETURN  shift 68
-	'-'  shift 69
-	'!'  shift 70
-	'['  shift 18
-	'}'  shift 164
-	'('  shift 72
-	.  error
-
-	llaves_array  goto 20
-	array  goto 21
-	tipo  goto 73
-	struct  goto 23
-	sentencia  goto 74
-	expresion  goto 75
-	if_else  goto 76
-	while  goto 77
-
-
-state 162
-	lista_sentencias : lista_sentencias . sentencia  (36)
-	if_else : IF '(' expresion ')' '{' lista_sentencias . '}' ELSE '{' lista_sentencias '}'  (47)
-
-	CTE_ENTERA  shift 60
-	CTE_CHAR  shift 61
-	CTE_REAL  shift 62
-	ID  shift 63
-	READ  shift 64
-	WRITE  shift 65
-	WHILE  shift 66
-	IF  shift 67
-	INT  shift 14
-	FLOAT  shift 15
-	CHAR  shift 16
-	STRUCT  shift 17
-	RETURN  shift 68
-	'-'  shift 69
-	'!'  shift 70
-	'['  shift 18
-	'}'  shift 165
-	'('  shift 72
-	.  error
-
-	llaves_array  goto 20
-	array  goto 21
-	tipo  goto 73
-	struct  goto 23
-	sentencia  goto 74
-	expresion  goto 75
-	if_else  goto 76
-	while  goto 77
-
-
-state 163
-	if_else : IF expresion '{' lista_sentencias '}' ELSE . '{' lista_sentencias '}'  (45)
-
-	'{'  shift 166
-	.  error
-
-
-state 164
-	while : WHILE '(' expresion ')' '{' lista_sentencias '}' .  (48)
-
-	.  reduce 48
-
-
-state 165
-	if_else : IF '(' expresion ')' '{' lista_sentencias '}' . ELSE '{' lista_sentencias '}'  (47)
-
-	ELSE  shift 167
-	.  error
-
-
-state 166
-	if_else : IF expresion '{' lista_sentencias '}' ELSE '{' . lista_sentencias '}'  (45)
-	lista_sentencias : .  (37)
-
-	.  reduce 37
-
-	lista_sentencias  goto 168
-
-
-state 167
-	if_else : IF '(' expresion ')' '{' lista_sentencias '}' ELSE . '{' lista_sentencias '}'  (47)
-
-	'{'  shift 169
-	.  error
-
-
-state 168
-	lista_sentencias : lista_sentencias . sentencia  (36)
-	if_else : IF expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias . '}'  (45)
+	if_else : IF expresion '{' lista_sentencias . '}' ELSE '{' lista_sentencias '}'  (47)
+	if_else : IF expresion '{' lista_sentencias . '}'  (48)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -3143,8 +3275,105 @@ state 168
 	while  goto 77
 
 
-state 169
-	if_else : IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' . lista_sentencias '}'  (47)
+state 157
+	expresion : tipo '(' expresion ')' .  (72)
+
+	.  reduce 72
+
+
+state 158
+	sentencia : expresion AND_AS expresion ';' .  (44)
+
+	.  reduce 44
+
+
+state 159
+	sentencia : expresion OR_AS expresion ';' .  (45)
+
+	.  reduce 45
+
+
+state 160
+	sentencia : expresion '=' expresion ';' .  (43)
+
+	.  reduce 43
+
+
+state 161
+	expresion : expresion '[' expresion ']' .  (73)
+
+	.  reduce 73
+
+
+state 162
+	lista_expresiones : lista_expresiones ',' expresion .  (54)
+	expresion : expresion . '+' expresion  (56)
+	expresion : expresion . '*' expresion  (57)
+	expresion : expresion . '/' expresion  (58)
+	expresion : expresion . '-' expresion  (59)
+	expresion : expresion . '%' expresion  (60)
+	expresion : expresion . EQ expresion  (61)
+	expresion : expresion . NOT_EQ expresion  (62)
+	expresion : expresion . '>' expresion  (63)
+	expresion : expresion . '<' expresion  (64)
+	expresion : expresion . L_EQ expresion  (65)
+	expresion : expresion . G_EQ expresion  (66)
+	expresion : expresion . AND expresion  (67)
+	expresion : expresion . OR expresion  (68)
+	expresion : expresion . AND_AS expresion  (69)
+	expresion : expresion . OR_AS expresion  (70)
+	expresion : expresion . '[' expresion ']'  (73)
+	expresion : expresion . '.' ID  (74)
+	expresion : expresion . '!' expresion  (75)
+
+	NOT_EQ  shift 92
+	AND  shift 93
+	OR  shift 94
+	EQ  shift 95
+	L_EQ  shift 96
+	G_EQ  shift 97
+	AND_AS  shift 119
+	OR_AS  shift 120
+	'>'  shift 101
+	'<'  shift 102
+	'+'  shift 103
+	'-'  shift 104
+	'*'  shift 105
+	'/'  shift 106
+	'%'  shift 107
+	'!'  shift 108
+	'['  shift 109
+	'.'  shift 110
+	')'  reduce 54
+	','  reduce 54
+
+
+state 163
+	sentencia : ID '(' lista_expresiones_llamada_fun ')' ';' .  (46)
+
+	.  reduce 46
+
+
+state 164
+	sentencia : READ '(' lista_expresiones ')' ';' .  (39)
+
+	.  reduce 39
+
+
+state 165
+	sentencia : WRITE '(' lista_expresiones ')' ';' .  (40)
+
+	.  reduce 40
+
+
+state 166
+	expresion : ID '(' lista_expresiones_llamada_fun ')' .  (71)
+
+	.  reduce 71
+
+
+state 167
+	while : WHILE '(' expresion ')' '{' . lista_sentencias '}'  (50)
 	lista_sentencias : .  (37)
 
 	.  reduce 37
@@ -3152,15 +3381,49 @@ state 169
 	lista_sentencias  goto 171
 
 
-state 170
-	if_else : IF expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias '}' .  (45)
+state 168
+	while : WHILE expresion '{' lista_sentencias '}' .  (51)
 
-	.  reduce 45
+	.  reduce 51
+
+
+state 169
+	if_else : IF '(' expresion ')' '{' . lista_sentencias '}' ELSE '{' lista_sentencias '}'  (49)
+	lista_sentencias : .  (37)
+
+	.  reduce 37
+
+	lista_sentencias  goto 172
+
+
+state 170
+	if_else : IF expresion '{' lista_sentencias '}' . ELSE '{' lista_sentencias '}'  (47)
+	if_else : IF expresion '{' lista_sentencias '}' .  (48)
+
+	ELSE  shift 173
+	CTE_ENTERA  reduce 48
+	CTE_CHAR  reduce 48
+	CTE_REAL  reduce 48
+	ID  reduce 48
+	READ  reduce 48
+	WRITE  reduce 48
+	WHILE  reduce 48
+	IF  reduce 48
+	INT  reduce 48
+	FLOAT  reduce 48
+	CHAR  reduce 48
+	STRUCT  reduce 48
+	RETURN  reduce 48
+	'-'  reduce 48
+	'!'  reduce 48
+	'['  reduce 48
+	'}'  reduce 48
+	'('  reduce 48
 
 
 state 171
 	lista_sentencias : lista_sentencias . sentencia  (36)
-	if_else : IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias . '}'  (47)
+	while : WHILE '(' expresion ')' '{' lista_sentencias . '}'  (50)
 
 	CTE_ENTERA  shift 60
 	CTE_CHAR  shift 61
@@ -3178,7 +3441,7 @@ state 171
 	'-'  shift 69
 	'!'  shift 70
 	'['  shift 18
-	'}'  shift 172
+	'}'  shift 174
 	'('  shift 72
 	.  error
 
@@ -3193,10 +3456,163 @@ state 171
 
 
 state 172
-	if_else : IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}' .  (47)
+	lista_sentencias : lista_sentencias . sentencia  (36)
+	if_else : IF '(' expresion ')' '{' lista_sentencias . '}' ELSE '{' lista_sentencias '}'  (49)
+
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 63
+	READ  shift 64
+	WRITE  shift 65
+	WHILE  shift 66
+	IF  shift 67
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	RETURN  shift 68
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'}'  shift 175
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	sentencia  goto 74
+	expresion  goto 75
+	if_else  goto 76
+	while  goto 77
+
+
+state 173
+	if_else : IF expresion '{' lista_sentencias '}' ELSE . '{' lista_sentencias '}'  (47)
+
+	'{'  shift 176
+	.  error
+
+
+state 174
+	while : WHILE '(' expresion ')' '{' lista_sentencias '}' .  (50)
+
+	.  reduce 50
+
+
+state 175
+	if_else : IF '(' expresion ')' '{' lista_sentencias '}' . ELSE '{' lista_sentencias '}'  (49)
+
+	ELSE  shift 177
+	.  error
+
+
+state 176
+	if_else : IF expresion '{' lista_sentencias '}' ELSE '{' . lista_sentencias '}'  (47)
+	lista_sentencias : .  (37)
+
+	.  reduce 37
+
+	lista_sentencias  goto 178
+
+
+state 177
+	if_else : IF '(' expresion ')' '{' lista_sentencias '}' ELSE . '{' lista_sentencias '}'  (49)
+
+	'{'  shift 179
+	.  error
+
+
+state 178
+	lista_sentencias : lista_sentencias . sentencia  (36)
+	if_else : IF expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias . '}'  (47)
+
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 63
+	READ  shift 64
+	WRITE  shift 65
+	WHILE  shift 66
+	IF  shift 67
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	RETURN  shift 68
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'}'  shift 180
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	sentencia  goto 74
+	expresion  goto 75
+	if_else  goto 76
+	while  goto 77
+
+
+state 179
+	if_else : IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' . lista_sentencias '}'  (49)
+	lista_sentencias : .  (37)
+
+	.  reduce 37
+
+	lista_sentencias  goto 181
+
+
+state 180
+	if_else : IF expresion '{' lista_sentencias '}' ELSE '{' lista_sentencias '}' .  (47)
 
 	.  reduce 47
 
 
-47 terminals, 28 nonterminals
-79 grammar rules, 173 states
+state 181
+	lista_sentencias : lista_sentencias . sentencia  (36)
+	if_else : IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias . '}'  (49)
+
+	CTE_ENTERA  shift 60
+	CTE_CHAR  shift 61
+	CTE_REAL  shift 62
+	ID  shift 63
+	READ  shift 64
+	WRITE  shift 65
+	WHILE  shift 66
+	IF  shift 67
+	INT  shift 14
+	FLOAT  shift 15
+	CHAR  shift 16
+	STRUCT  shift 17
+	RETURN  shift 68
+	'-'  shift 69
+	'!'  shift 70
+	'['  shift 18
+	'}'  shift 182
+	'('  shift 72
+	.  error
+
+	llaves_array  goto 20
+	array  goto 21
+	tipo  goto 73
+	struct  goto 23
+	sentencia  goto 74
+	expresion  goto 75
+	if_else  goto 76
+	while  goto 77
+
+
+state 182
+	if_else : IF '(' expresion ')' '{' lista_sentencias '}' ELSE '{' lista_sentencias '}' .  (49)
+
+	.  reduce 49
+
+
+49 terminals, 28 nonterminals
+83 grammar rules, 183 states

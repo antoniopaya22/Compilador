@@ -3,74 +3,69 @@
 
 	 ' * int i (offset 0)
 	 ' * int j (offset 2)
+	 ' * int k (offset 4)
 call main
 halt
 
-#line	4
- f:
-	 ' * Parametros
-	 ' * int a (offset 4)
-	 ' * Variables locales
-	 enter 0
-
-#line	5
-	 ' * Write part 0
-	 push bp
-	 pushi 4
-	 addi
-	 loadi
-	 outi
-	 ret 0, 0, 2
-
-#line	8
- g:
-	 ' * Parametros
-	 ' * int a (offset 4)
-	 ' * Variables locales
-	 enter 0
-
-#line	9
-	 ' * Write part 0
-	 push bp
-	 pushi 4
-	 addi
-	 loadi
-	 loadi
-	 outi
-	 ret 0, 0, 2
-
-#line	12
+#line	3
  main:
 	 ' * Parametros
 	 ' * Variables locales
 	 enter 0
 
-#line	13
-	 ' * i = 2
+#line	4
+	 ' * i = 5
 	 pusha 0
-	 pushi 2
+	 pushi 5
 	 storei
 
-#line	14
-	 ' * j = 6
+#line	5
+	 ' * j = 5
 	 pusha 2
-	 pushi 6
+	 pushi 5
 	 storei
 
-#line	15
-	 ' * InvocacionFuncion [nombre=f, params=[i]]
+#line	6
+	 ' * k = 3
+	 pusha 4
+	 pushi 3
+	 storei
+
+#line	12
+	 ' * If [condicion=i ^^ k, cuerpo_if=[Escritura [expresion=['b', 'i', 'e', 'n']]], cuerpo_else=[Escritura [expresion=['m', 'a', 'l']]]]
 	 pusha 0
 	 loadi
-	 call f
+	 pusha 4
+	 loadi
+	 eqi
+	 not
+	 jz label_0
 
-#line	16
+#line	9
 	 ' * Write part 0
-	 pushb 10
+	 pushb 98
 	 outb
+	 ' * Write part 1
+	 pushb 105
+	 outb
+	 ' * Write part 2
+	 pushb 101
+	 outb
+	 ' * Write part 3
+	 pushb 110
+	 outb
+	 jmp label_1
+ label_0:
 
-#line	17
-	 ' * InvocacionFuncion [nombre=g, params=[i]]
-	 pusha 0
-	 loadi
-	 call g
+#line	11
+	 ' * Write part 0
+	 pushb 109
+	 outb
+	 ' * Write part 1
+	 pushb 97
+	 outb
+	 ' * Write part 2
+	 pushb 108
+	 outb
+ label_1:
 	 ret 0, 0, 0

@@ -19,9 +19,11 @@ import java.util.*;
 %token CTE_ENTERA CTE_CHAR CTE_REAL ID NOT_EQ AND OR POW
 %token EQ L_EQ G_EQ READ WRITE WHILE IF ELSE INT FLOAT CHAR
 %token VAR STRUCT RETURN FUNC MAIN END
+%token AND_AS OR_AS
 
 // Preferencia
 %right '='
+%right AND_AS OR_AS
 %left OR AND
 %left EQ NOT_EQ
 %left L_EQ G_EQ '>' '<'
@@ -160,6 +162,16 @@ sentencia: RETURN expresion ';' 							{ $$ = new Return(lexico.getLinea(), lexi
 		 | if_else											{ $$ = $1;}
 		 | while											{ $$ = $1;}
 		 | expresion '=' expresion ';'						{ $$ = new Asignacion(lexico.getLinea(), lexico.getColumna(), $1, $3); }
+		 | expresion AND_AS expresion ';'					{ 
+		 													  
+		 													  $$ = new Asignacion(lexico.getLinea(), lexico.getColumna(), $1,
+												   				new AsignacionLogica(lexico.getLinea(), lexico.getColumna(), $1, "&&", $3)); 
+		 													}
+		 | expresion OR_AS expresion ';'					{ 
+		 													  
+		 													  $$ = new Asignacion(lexico.getLinea(), lexico.getColumna(), $1,
+												   				new AsignacionLogica(lexico.getLinea(), lexico.getColumna(), $1, "||", $3)); 
+		 													}
 		 | ID '(' lista_expresiones_llamada_fun ')' ';'		{ $$ = new LlamadaFuncion(lexico.getLinea(), lexico.getColumna(), $1, $3); }
 		 ;
 		   
@@ -197,6 +209,8 @@ expresion: expresion '+' expresion                  { $$ = new Aritmetica(lexico
 		 | expresion G_EQ expresion					{ $$ = new Comparacion(lexico.getLinea(), lexico.getColumna(), $1, ">=", $3); }
 		 | expresion AND expresion					{ $$ = new Logica(lexico.getLinea(), lexico.getColumna(), $1, "&&", $3); }
 		 | expresion OR expresion					{ $$ = new Logica(lexico.getLinea(), lexico.getColumna(), $1, "||", $3); }
+		 | expresion AND_AS expresion				{ $$ = new AsignacionLogica(lexico.getLinea(), lexico.getColumna(), $1, "&&", $3); }
+		 | expresion OR_AS expresion				{ $$ = new AsignacionLogica(lexico.getLinea(), lexico.getColumna(), $1, "||", $3); }
 		 | ID '(' lista_expresiones_llamada_fun ')' { $$ = new InvocacionFuncion(lexico.getLinea(), lexico.getColumna(), $1, $3); }
 		 | tipo '(' expresion ')'					{ $$ = new Cast(lexico.getLinea(), lexico.getColumna(), $1, $3); }
 		 | expresion '[' expresion ']'				{ $$ = new AccesoArray(lexico.getLinea(), lexico.getColumna(), $1, $3); }

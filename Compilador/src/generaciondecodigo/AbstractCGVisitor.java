@@ -7,6 +7,7 @@ import ast.definicion.DefVariable;
 import ast.expresion.AccesoArray;
 import ast.expresion.AccesoCampoStruct;
 import ast.expresion.Aritmetica;
+import ast.expresion.AsignacionLogica;
 import ast.expresion.Cast;
 import ast.expresion.Comparacion;
 import ast.expresion.InvocacionFuncion;
@@ -73,6 +74,11 @@ public abstract class AbstractCGVisitor implements Visitor{
 	 */
 	@Override
 	public Object visit(Logica e, Object param) {
+		throw new IllegalStateException("Esta plantilla no se puede aplicar a Logica");
+	}
+	
+	@Override
+	public Object visit(AsignacionLogica e, Object param) {
 		throw new IllegalStateException("Esta plantilla no se puede aplicar a Logica");
 	}
 

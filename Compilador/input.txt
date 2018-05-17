@@ -1,21 +1,47 @@
-// * Variables globales
-var i,n int;
+
+var i int;
+var w [4]int;
+var alltrue,notallfalse,anyfalse,anytrue int;
+var d float32;
 var c char;
-var record struct {
-  intField int;
-  realField float32;
-};
 
-// * Funciones
-func f(a int, c float32) int {
-  var real float32;
-  real = c;
-  i = a;
-}
-
-// * Programa principal
 func main() {
-  var i int;
-  var r float32;
-  write(i, f(n,r), record.intField, record.realField);
+  w[0] = 1;
+  w[1] = 2;
+  w[2] = 0;
+  w[3] = -4;
+  i = 0;
+  alltrue = 1;
+  notallfalse = 0;
+  anyfalse = 0;
+  anytrue = 0;
+  write(alltrue,notallfalse,anyfalse,anytrue); //1000
+  write('\n');
+  
+  while(i<4){
+  	alltrue &&= w[i];
+  	notallfalse ||= w[i];
+  	anytrue ||= w[i];
+  	anyfalse ||= !w[i];
+  	i = i+1;
+  }
+  
+  write(alltrue,!notallfalse,anytrue,anyfalse); //0011
+  write('\n');
+  
+  alltrue = 1;
+  i = 0;
+  while(alltrue &&= w[i]){
+  	write(i); //01
+  	i = i+1;
+  }
+  
+  alltrue = 1;
+  i = 0;
+  alltrue &&= i ||= w[0];
+  write('\n',i,alltrue); //11
+  
+  // (alltrue &&= 0) = 1; //compiler error
+  // (notallfalse ||= 1) = 0; //compiler error
 }
+

@@ -3,6 +3,7 @@ package generaciondecodigo;
 import ast.expresion.AccesoArray;
 import ast.expresion.AccesoCampoStruct;
 import ast.expresion.Aritmetica;
+import ast.expresion.AsignacionLogica;
 import ast.expresion.Cast;
 import ast.expresion.Comparacion;
 import ast.expresion.Expresion;
@@ -14,6 +15,7 @@ import ast.expresion.Logica;
 import ast.expresion.MenosUnario;
 import ast.expresion.NotUnario;
 import ast.expresion.Variable;
+import ast.tipo.Entero;
 import ast.tipo.Tipo;
 import ast.tipo.TipoFuncion;
 
@@ -106,6 +108,21 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 		cg.logica(e.getOperador(), e.getTipo());
 		return null;
 	}
+	
+	@Override
+	public Object visit(AsignacionLogica e, Object param) {
+		e.getOp1().accept(this, param);
+		cg.convertTo(e.getOp1().getTipo(), e.getTipo());
+		e.getOp2().accept(this, param);
+		cg.convertTo(e.getOp2().getTipo(), e.getTipo());
+		cg.logica(e.getOperador(), e.getTipo());
+		
+		e.getOp1().accept(av, param);
+		e.getOp2().accept(this, param);
+		cg.convertTo(e.getOp2().getTipo(), e.getOp1().getTipo());
+		cg.store(e.getOp1().getTipo().sufijo());
+		return null;
+	}
 
 	@Override
 	public Object visit(MenosUnario e, Object param) {
@@ -118,6 +135,7 @@ public class ValueCGVisitor extends AbstractCGVisitor {
 	@Override
 	public Object visit(NotUnario e, Object param){
 		e.getExpresion().accept(this, param);
+		cg.convertTo(e.getExpresion().getTipo(), Entero.getInstancia());
 		cg.not();
 		return null;
 	}

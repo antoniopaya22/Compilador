@@ -6,6 +6,7 @@ package semantico;
 import ast.expresion.AccesoArray;
 import ast.expresion.AccesoCampoStruct;
 import ast.expresion.Aritmetica;
+import ast.expresion.AsignacionLogica;
 import ast.expresion.Cast;
 import ast.expresion.Comparacion;
 import ast.expresion.Expresion;
@@ -127,6 +128,15 @@ public class LValueVisitor extends AbstractVisitor {
 		return super.visit(e, param);
 	}
 
+	@Override
+	public Object visit(AsignacionLogica e, Object param) {
+		e.setLValue(false);
+		super.visit(e, param);
+		if (!e.getOp1().esLValue()) {
+			new TipoError(e.getFila(), e.getColumna(), "La parte izquierda de la asignacion no puede estar ahi");
+		}
+		return null;
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
