@@ -95,3 +95,9 @@ func main() {
 }
 
 ```
+
+### Ejecución
+
+Para compilar un programa mediante el compilador se le deben pasar dos ficheros como parámetro a este, siendo:
+1. **source.txt:** Programa a compilar (puede tener otro nombre)
+2. **output.txt:** Fichero de salida de la compilación con el código MAPL (puede tener otro nombre)
